@@ -18,7 +18,7 @@ for (const marker of [
 ]) {
   assert.ok(html.includes(marker), 'Produktbaustein fehlt: ' + marker);
 }
-const matches = [...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)];
+const matches = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/gi)];
 assert.ok(matches.length > 0, 'Interaktionsskript fehlt');
 for (const [, js] of matches) new vm.Script(js, { filename: 'index.html' });
 assert.ok(!/<script[^>]+src=/.test(html), 'Externe Skripte sind für diese Demo nicht freigegeben');
