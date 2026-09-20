@@ -226,7 +226,7 @@ try{
  await dialog.locator('[data-action="close"]').first().click();
  await workshop.locator('[data-method="empathie"]').first().click();
  assert.ok((await workshop.locator('[data-method-note="empathie"][data-note-key="beobachtung"]').inputValue()).includes('umständlich'),'Notes lost on modal close');
- await workshop.locator('[data-action="close"]').click();
+ await workshop.locator('.method-workshop [data-action="close"]').first().click();
  const fullGuides=['empathie','beobachten','fragen','annahmen','skizze','aktion','testen'];
  const details=workshop.locator('.method-all').first();await details.locator('summary').click();
  for(const id of fullGuides){
