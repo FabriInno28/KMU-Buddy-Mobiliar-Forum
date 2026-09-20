@@ -381,6 +381,21 @@ body{background:#F6F3EC}
 }
 @media(max-width:700px){.mvp-entry-foot{border-top:0}.mvp-optional{margin-top:10px}}
 @media(max-width:360px){.mvp-intro h1{font-size:33px}.mvp-intro h1 .promise-last{font-size:.71em}.mvp-landing{padding:17px 13px}.mvp-entry{padding:14px 12px}}
+
+/* iPad im Querformat: Gesprächseinstieg bleibt vor der Falz. */
+@media (min-width:701px) and (max-height:820px){
+ .mvp-landing{padding:22px clamp(25px,4vw,44px) 31px;margin:12px auto 18px}
+ .mvp-intro h1{font-size:clamp(42px,4.5vw,54px);line-height:1.02;margin:8px 0 10px}
+ .mvp-intro h1 .promise-last{font-size:.86em}
+ .mvp-intro .lead{font-size:16px;line-height:1.35;max-width:800px;margin-bottom:0}
+ .cinema-promise{margin:11px 0 5px;gap:15px}
+ .mvp-smallprint{margin-top:5px}
+ .mvp-entry{margin-top:16px;padding:19px 23px}
+ .mvp-question{font-size:26px}
+ .mvp-entry textarea{min-height:85px}
+ .mvp-speakbar{padding:6px 0 0}
+ .mvp-entry-foot{padding-top:4px;margin-top:0}
+}
 </style>
 </head>
 <body>
