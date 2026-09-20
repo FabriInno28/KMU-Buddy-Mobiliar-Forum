@@ -140,11 +140,16 @@ try{
  // The original podcast and video links must be clickable without entering a conversation.
  const homepageMedia=await browser.newPage({viewport:{width:390,height:844}});
  await homepageMedia.goto(appUrl);
+ await homepageMedia.screenshot({path:'test-artifacts/mobile-home-entry.png',fullPage:true});
  const homeLinks=homepageMedia.locator('.home-media-grid a[href^="https://"]');
  assert.equal(await homeLinks.count(),2,'Homepage: podcast and videopodcast links missing');
  assert.ok((await homeLinks.nth(0).getAttribute('href')).includes('podcasts.apple.com'),'Podcast not real');
  assert.ok((await homeLinks.nth(1).getAttribute('href')).includes('svc.swiss'),'Video not real');
  await homepageMedia.close();
+ const desktopHome=await browser.newPage({viewport:{width:1440,height:900}});
+ await desktopHome.goto(appUrl);
+ await desktopHome.screenshot({path:'test-artifacts/desktop-home-entry.png',fullPage:true});
+ await desktopHome.close();
  const unknown=await browser.newPage({viewport:{width:390,height:844}});
  await unknown.goto(appUrl);await unknown.locator('[data-action="begin"]').click();
  await unknown.locator('#custom').fill('Wir haben ein merkwürdiges Gefühl, wenn wir am Montag wieder starten.');
