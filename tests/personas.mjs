@@ -160,12 +160,15 @@ try{
   const page=await browser.newPage({viewport:{width:390,height:844}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(appUrl);
   await page.locator('#hero-story').fill(journey.story);
+  await page.locator('.mvp-optional summary').click();
   await page.locator('#hero-goal').fill(journey.goal);
   await page.locator('#hero-size').selectOption(journey.size);
   await page.locator('#hero-form button[type="submit"]').click();
   await page.getByRole('heading',{name:new RegExp(journey.question,'i')}).waitFor();
   await page.locator('[data-choice="0"]').click();
   await page.locator('[data-action="next"]').click();
+  assert.ok(await page.locator('.dash-quick [data-action="open-try"]').isVisible(),'First actionable step is not visible');
+  await page.locator('.own-theme-details summary').click();
   assert.ok(await page.locator('.own-themes').isVisible(),'Own situation should lead the dashboard');
   assert.ok((await page.locator('.own-themes').innerText()).includes(journey.story),'Own story lost');
   assert.ok((await page.locator('.own-themes').innerText()).includes(journey.goal),'Own goal lost');
@@ -206,6 +209,7 @@ try{
  const workshopErrors=[];workshop.on('pageerror',e=>workshopErrors.push(e.message));
  await workshop.goto(appUrl);
  await workshop.locator('#hero-story').fill('Im Quartierladen kommen weniger Stammkundinnen und Stammkunden als früher.');
+ await workshop.locator('.mvp-optional summary').click();
  await workshop.locator('#hero-goal').fill('Verstehen, weshalb die Leute seltener einkaufen');
  await workshop.locator('#hero-size').selectOption('2');
  await workshop.locator('#hero-form button[type="submit"]').click();
@@ -249,3 +253,6 @@ try{
  await workshop.close();
  console.log(JSON.stringify({result:'PASS',tested:findings.length,findings},null,2));
 }finally{await browser.close();}
+
+// Mobile-first regression audit: real journeys and screenshots at phone/tablet sizes.
+await import('./mobile-audit.mjs');

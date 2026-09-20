@@ -5,7 +5,7 @@ import vm from 'node:vm';
 const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 assert.match(html, /<!doctype html>/i, 'Startseite fehlt');
 assert.match(html, /<meta name="viewport"/i, 'Mobile Viewport fehlt');
-assert.match(html, /Weniger suchen\.<br><em>Klarer sehen\.<\/em><br>Ins Handeln kommen\./, 'Neues Produktversprechen fehlt');
+assert.match(html, /Weniger suchen\.<br><em>Klarer sehen\.<\/em><br><span class="promise-last">Ins Handeln kommen\.<\/span>/, 'Neues Produktversprechen fehlt');
 assert.match(html, /function mediaWhy\(\)/, 'Begründungslogik für Empfehlungen fehlt');
 assert.match(html, /Warum gerade für dich\?/, 'Begründung an der Medienkarte fehlt');
 assert.ok(!html.includes('"demand":["bake"]'), 'Unpassender Bäckerei Beitrag für Nachfragerückgang darf nicht persönlich empfohlen werden');
