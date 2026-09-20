@@ -13,6 +13,12 @@ Ein eigenständiges, responsives Konzept für die Skalierungsinitiative des Mobi
 3. Im Dashboard den Impuls ausprobieren und weitere passende Möglichkeiten entdecken.
 4. «Neues Gespräch» erlaubt einen Vergleich der verschiedenen Themenpfade.
 
+## MVP 1: Vertiefte Methoden und präzise Medien (September 2026)
+
+Der kostenlose Prototyp zeigt die eigenen Themen im Dashboard, führt mit einer situationsabhängigen Rückfrage zu einem kleinen Versuch und bietet in sieben ausgewählten Methoden eigenständig verfasste Arbeitsblätter. Die Empathie-Gespräch-Karte enthält auch eine konkrete Kontaktanfrage, sechs zum Anlass passende offene Fragen und eine einfache Auswertung. Die Notizen bleiben bis zum Neuladen im Browser; bitte keine echten Personendaten oder vertraulichen Angaben eingeben.
+
+[Medienkuration mit direkten Beitragslinks und begründeter Auswahl](MEDIEN-KURATIERUNG.md). Externe Inhalte anderer Finanzdienstleister werden im öffentlichen Empfehlungsbereich nicht verlinkt; öffentliche Studien für die Forschung sind eine getrennte Frage.
+
 ## Kostenlose KMU-Realitäten-Demo (September 2026)
 
 Diese GitHub-Pages-Version benötigt **keinen API-Schlüssel, kein ChatGPT-Abo und kein kostenpflichtiges Hosting**. Die Anwendung läuft vollständig im Browser. Sie führt mit einfachen, offengelegten Regeln durch typische Situationen kleiner Schweizer Unternehmen; **sie ist kein echtes KI-Modell und kann freie Texte nicht zuverlässig semantisch verstehen**.
@@ -25,8 +31,8 @@ Die öffentlichen Schweizer Studien mit Population, Zeitpunkt und Geltungsgrenze
 
 - Responsives Gespräch mit freier Texteingabe, Stichworterkennung, gezielter Rückfrage und Möglichkeit zur Korrektur der Einordnung. **Die Erkennung ist regelbasiert, nicht generative KI.**
 - Antwortspezifische Dashboards für acht typische Situationen sowie thematisch passende Kurzimpulse und Schrittfolgen.
-- 24 vereinfachte Mobiliar Forum Methodenkarten mit Zeit- und Gruppengrössenangaben; Empfehlung berücksichtigt die angegebene Teamgrösse.
-- Reale externe Podcast- und Videopodcast-Beispiele, mit Quelle und Link zur Originalseite. Eigene Medienideen sind gesondert als noch nicht produziert gekennzeichnet.
+- 7 ausgearbeitete Praxisguides mit Vorbereitung, konkretem Ablauf, Auswertung und lokal bearbeitbaren Notizen sowie 17 weitere Methodenkarten als Kurzüberblick. Das Empathie-Gespräch bietet eine situationsbezogene Einladung und sechs konkrete Interviewfragen. Gruppengrösse und Zeit orientieren sich am vorhandenen Methodenkatalog; die erweiterten Texte sind eigene Prototypenhilfen, nicht der Originalwortlaut.
+- Externe Schweizer SRF Podcasts, Hörbeiträge und Videos mit konkretem Direktlink zur ausgewählten Folge oder zum klar bezeichneten TV-Beitrag; keine Verweise auf andere Finanz- oder Versicherungsdienstleister. Medien werden nur bei plausibler thematischer Passung persönlich empfohlen. Eigene Medienideen sind gesondert als noch nicht produziert gekennzeichnet.
 - Interaktive Checkliste, kopierbarer Impuls, Forum, Peer und Ökosystem als klar markierte Konzeptflächen. Keine Buchungen oder Live-Empfehlungen.
 - Keine Speicherung oder Übertragung von Gesprächseingaben auf einen Server. Externe Inhalte werden erst beim bewussten Öffnen eines Links aufgerufen.
 - Automatische Browserprüfungen mit vier fiktiven KMU, einem Einpersonenbetrieb und einer Korrektur der Antworten; technische Prüfungen und Screenshots in GitHub Actions.
