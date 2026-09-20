@@ -223,7 +223,7 @@ try{
  assert.ok((await dialog.innerText()).includes('AUSWERTEN'),'Practical analysis missing');
  assert.equal(await dialog.locator('textarea[data-method-note]').count(),3,'Notepad does not contain all three reflection questions');
  await dialog.locator('[data-method-note="empathie"][data-note-key="beobachtung"]').fill('Ein konkreter Einkauf war umständlich.');
- await dialog.locator('[data-action="close"]').click();
+ await dialog.locator('[data-action="close"]').first().click();
  await workshop.locator('[data-method="empathie"]').first().click();
  assert.ok((await workshop.locator('[data-method-note="empathie"][data-note-key="beobachtung"]').inputValue()).includes('umständlich'),'Notes lost on modal close');
  await workshop.locator('[data-action="close"]').click();
@@ -237,7 +237,7 @@ try{
   assert.ok((await workshop.locator('.method-workshop').innerText()).includes('VORBEREITEN'),'Preparation missing '+id);
   assert.ok((await workshop.locator('.method-workshop').innerText()).includes('AUSWERTEN'),'Evaluation missing '+id);
   assert.ok(await workshop.locator('[data-method-copy="report"]').isVisible(),'Takeaway is not copyable '+id);
-  await workshop.locator('.method-workshop [data-action="close"]').click();
+  await workshop.locator('.method-workshop [data-action="close"]').first().click();
  }
  assert.equal(workshopErrors.length,0,'Method guides raised client errors');
  const allLinks=await workshop.locator('a[href^="http"]').evaluateAll(nodes=>nodes.map(n=>n.href));
