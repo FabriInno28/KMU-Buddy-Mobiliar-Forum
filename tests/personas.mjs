@@ -216,7 +216,7 @@ try{
  await workshop.locator('[data-method="empathie"]').first().click();
  const dialog=workshop.locator('.method-workshop');
  assert.ok(await dialog.isVisible(),'Interview worksheet did not open');
- assert.ok((await dialog.innerText()).includes('Quartierladen'),'The method must use the user's own issue');
+ assert.ok((await dialog.innerText()).includes('Quartierladen'),'The method must include the entered KMU situation');
  assert.ok((await dialog.innerText()).includes('Stammkund'),'Interview questions must be tailored to demand context');
  assert.equal(await dialog.locator('.guide-questions li').count(),6,'Not six themed interview questions');
  assert.ok((await dialog.innerText()).includes('So könntest du die Person anfragen'),'Concrete contact invitation missing');
