@@ -212,7 +212,7 @@ try{
  await workshop.locator('[data-choice="1"]').click();
  await workshop.locator('[data-action="next"]').click();
  await workshop.locator('.dash-tabs [data-tab="methods"]').click();
- assert.ok((await workshop.locator('.library-head').innerText()).includes('Sieben ausgearbeitete Methoden'),'No extended method overview');
+ assert.ok((await workshop.locator('.library-head').textContent()).includes('Sieben ausgearbeitete Methoden'),'No extended method overview');
  await workshop.locator('[data-method="empathie"]').first().click();
  const dialog=workshop.locator('.method-workshop');
  assert.ok(await dialog.isVisible(),'Interview worksheet did not open');
