@@ -160,6 +160,7 @@ try{
   const page=await browser.newPage({viewport:{width:390,height:844}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(appUrl);
   await page.locator('#hero-story').fill(journey.story);
+  await page.locator('.mvp-optional summary').click();
   await page.locator('#hero-goal').fill(journey.goal);
   await page.locator('#hero-size').selectOption(journey.size);
   await page.locator('#hero-form button[type="submit"]').click();
@@ -206,6 +207,7 @@ try{
  const workshopErrors=[];workshop.on('pageerror',e=>workshopErrors.push(e.message));
  await workshop.goto(appUrl);
  await workshop.locator('#hero-story').fill('Im Quartierladen kommen weniger Stammkundinnen und Stammkunden als früher.');
+ await workshop.locator('.mvp-optional summary').click();
  await workshop.locator('#hero-goal').fill('Verstehen, weshalb die Leute seltener einkaufen');
  await workshop.locator('#hero-size').selectOption('2');
  await workshop.locator('#hero-form button[type="submit"]').click();
