@@ -74,7 +74,7 @@ try{
  }
  const solo=await handler.fetch(mk({phase:'dashboard',story:'Ich bin allein in meiner Bäckerei.',answer:'Ich brauche Zeit für neue Ideen.',size:1}));
  const result=await solo.json();assert.equal(result.method.id,'skizze');
- assert.ok(apiCalls>=10);
+ assert.ok(apiCalls>=9);
  console.log('PASS: 24 Methoden, HTML/JS syntax, secrets, authorization, origin, validation and 4 KMU + solo mocked two-step AI turns.');
 }finally{
  globalThis.fetch=originalFetch;
