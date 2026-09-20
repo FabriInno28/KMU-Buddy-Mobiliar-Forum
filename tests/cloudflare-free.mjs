@@ -14,6 +14,11 @@ new vm.Script(embedded,{filename:"public/pilot.html"});
 assert.ok(!page.includes("sk-proj-")&&!page.includes("CF_API_KEY"));
 assert.ok(eligibleMethods(1,"Ich suche neue Ideen","").every(m=>m.minPeople<=1));
 assert.ok(eligibleMethods(2,"Unser Team braucht Ideen","").every(m=>m.minPeople<=2));
+assert.equal(eligibleMethods(4,"In der Bäckerei läuft alles über meinen Tisch, ich erledige die Bestellungen selbst.","")[0].id,"aktion");
+assert.equal(eligibleMethods(12,"Metallbau: Übergaben zwischen Werkstatt und Montage fehlen.","")[0].id,"challenge");
+assert.equal(eligibleMethods(6,"Coiffeursalon: Mitarbeitende länger halten.","")[0].id,"empathie");
+assert.equal(eligibleMethods(8,"Schreinerei: Der erfahrenste Schreiner geht in Pension.","")[0].id,"beobachten");
+assert.equal(eligibleMethods(1,"Ich arbeite allein und möchte neue Ideen.","")[0].id,"skizze");
 let calls=0;let lastPayload;
 const env={BUDDY_TEST_CODE:"separates-test-passwort-mit-32-zeichen",ASSETS:{fetch:async()=>new Response("DEMO OK")},
  AI:{run:async(model,payload)=>{
