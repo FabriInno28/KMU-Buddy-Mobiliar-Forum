@@ -32,16 +32,18 @@ globalThis.fetch=async (_url,opts)=>{
  const userText=payload.story+' '+payload.answer;
  const team=payload.teamSize;
  const chosen=team===1?'skizze':'aktion';
+ const names=['Bäckerei','Metallbau','Coiffeursalon','Schreinerei'];
+ const persona=names.find(n=>userText.includes(n))||'Andere';
  const output=payload.phase==='ask'?{
   phase:'ask',message:'Das klingt nach einem vollen Alltag. Was bleibt bei euch konkret liegen, wenn du dich einen Tag herausnimmst?',
   reflection:'',insight:'',impulseTitle:'',impulseWhy:'',steps:['','',''],methodId:'none',mediaId:'none',mediaWhy:''
  }:{
   phase:'dashboard',message:'',reflection:'Du möchtest Zeit für neue Ideen finden.',insight:'Vielleicht hängt eine kleine Entscheidung noch an dir.',
-  impulseTitle:'Gib morgen eine kleine Aufgabe ab.',impulseWhy:'Das könnte dir Zeit für neue Ideen geben.',
+  impulseTitle:'Dein konkreter Versuch für '+persona+'.',impulseWhy:'Das könnte dir Zeit für neue Ideen geben.',
   steps:['Wähle eine kleine Aufgabe.','Besprich den Rahmen mit einer Person.','Probiert es morgen aus.'],
   methodId:chosen,mediaId:'kmu_innovation',mediaWhy:'Passt zu deiner Suche nach neuen Ideen.'
  };
- assert.ok(userText.includes('Bäckerei'),'Unrelated test payload');
+ assert.ok(persona!=='Andere','Unexpected test persona');
  return new Response(JSON.stringify({choices:[{message:{content:JSON.stringify(output)}}]}),{status:200});
 };
 try{
@@ -59,7 +61,7 @@ try{
  {name:'Schreinerei',story:'In unserer Schreinerei geht bald viel Wissen mit dem Pensionierten verloren.',size:8},
  ];
  for(const persona of personas){
- const story=persona.name==='Bäckerei'?persona.story:persona.story+' Wir arbeiten in einer Bäckerei nebenan.';
+ const story=persona.story;
  const question=await handler.fetch(mk({phase:'ask',story,size:persona.size}));
  assert.equal(question.status,200,persona.name+' first turn');
  const q=await question.json();assert.equal(q.phase,'ask');assert.ok(q.message.includes('Was bleibt'));
@@ -68,6 +70,7 @@ try{
  const d=await dashboard.json();assert.equal(d.phase,'dashboard');assert.equal(d.steps.length,3);assert.ok(d.method);
  assert.ok(d.method.minPeople<=persona.size);
  assert.ok(MEDIA.some(x=>x.id===d.media.id));
+ assert.ok(d.title.includes(persona.name),'Personalized test output was not returned');
  }
  const solo=await handler.fetch(mk({phase:'dashboard',story:'Ich bin allein in meiner Bäckerei.',answer:'Ich brauche Zeit für neue Ideen.',size:1}));
  const result=await solo.json();assert.equal(result.method.id,'skizze');
