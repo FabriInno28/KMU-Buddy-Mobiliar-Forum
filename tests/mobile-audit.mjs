@@ -30,8 +30,10 @@ try {
   });
   assert.ok(home.scrollWidth<=home.viewport+1,device.id+': horizontal overflow home '+JSON.stringify(home));
   assert.ok(home.entry && home.entry.left>=-1 && home.entry.right<=home.viewport+1,device.id+': entry clipped');
-  assert.ok(home.entry.top<home.viewportHeight,device.id+': user has to scroll to discover the entry '+JSON.stringify(home));
+  assert.ok(home.entry.top<home.viewportHeight-110,device.id+': user has to scroll to discover the entry '+JSON.stringify(home));
+  if(device.id==='iphone-se')assert.ok(home.submit.top<home.viewportHeight,device.id+': first step CTA out of initial viewport '+JSON.stringify(home));
   await page.locator('#hero-story').fill('Wir sind vier in einer Bäckerei. Ich muss fast alles entscheiden und habe kaum Zeit für neue Ideen.');
+  await page.locator('.mvp-optional summary').click();
   await page.locator('#hero-goal').fill('Mehr Freiraum für neue Rezepte');
   await page.locator('#hero-size').selectOption('2');
   await page.locator('#hero-form button[type="submit"]').click();
