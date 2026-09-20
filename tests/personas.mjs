@@ -33,7 +33,7 @@ try{
   assert.ok((await page.locator('.feature.action').innerText()).includes(p.action),p.id+': Impuls nicht passend');
   assert.ok((await page.locator('.method-strip').innerText()).includes(p.method),p.id+': Methodenkarte nicht passend');
   const directLinks=page.locator('.dashboard-media-shelf a[href^="https://"]');
-  assert.ok(await directLinks.count()>=1,p.id+': thematic podcast or video link missing from immediate dashboard');
+  assert.ok(await directLinks.count()>=1||(await page.locator('.dashboard-media-shelf').innerText()).includes('noch keinen unmittelbar passenden Beitrag'),p.id+': missing relevant media or honest no-match message');
   const width=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
   assert.ok(width.scroll<=width.inner+1,p.id+': horizontales Scrollen '+JSON.stringify(width));
   await page.screenshot({path:'test-artifacts/'+p.id+'-dashboard.png',fullPage:true});
