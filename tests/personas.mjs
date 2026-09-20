@@ -249,3 +249,6 @@ try{
  await workshop.close();
  console.log(JSON.stringify({result:'PASS',tested:findings.length,findings},null,2));
 }finally{await browser.close();}
+
+// Mobile-first regression audit: real journeys and screenshots at phone/tablet sizes.
+await import('./mobile-audit.mjs');
