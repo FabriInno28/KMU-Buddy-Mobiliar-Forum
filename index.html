@@ -158,6 +158,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{
 .editorial-media-all{color:#A62435;border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;font-size:14px;font-weight:800;min-height:44px;text-align:left;padding:10px 0;margin-top:10px}
 .all-media-heading{margin-top:34px}
 @media(max-width:740px){.editorial-media-grid{grid-template-columns:1fr}.editorial-media-card{grid-template-columns:50px minmax(0,1fr);padding:18px;gap:12px}.editorial-media-art{width:50px;height:50px}.editorial-media-body h3{font-size:22px}.dashboard-media-shelf{margin-top:19px}}
+
+/* Visual review: the old decorative ticket was cropped on desktop and mobile. Keep a clean, complete visual. */
+.hero-art .art-paper{display:none!important}
+@media(min-width:701px){.hero-art{height:445px}.hero-art .art-middle{padding-bottom:0}}
+@media(max-width:700px){.hero-art{display:none!important}.hero{padding-bottom:43px}.home-inspiration{padding-top:34px}}
 </style>
 </head>
 <body>
