@@ -54,6 +54,8 @@ try{
   assert.ok((await page.locator(".dash-hero h1").innerText()).includes(p.name),p.id+": personal reflection missing");
   assert.ok((await page.locator(".action h2").innerText()).includes(p.action),p.id+": action mismatch");
   assert.ok(await page.locator(".aside h3").first().isVisible(),p.id+": method area missing");
+  await page.locator(".method-detail summary").click();
+  assert.equal(await page.locator(".method-detail li").count(),3,p.id+": Methodenkarte muss drei Schritte zeigen");
   assert.ok(await page.locator(".extra a[href^='https://']").count()>=1,p.id+": podcast missing");
   const viewport=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
   assert.ok(viewport.scroll<=viewport.inner+1,p.id+": horizontal overflow "+JSON.stringify(viewport));
