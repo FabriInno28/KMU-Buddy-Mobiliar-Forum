@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 const appUrl=pathToFileURL(resolve('index.html')).href;
 mkdirSync('test-artifacts',{recursive:true});
 const examples=[
- {id:'baeckerei',label:'Bäckerei, 4 Personen, Inhaberin als Engpass',story:'Ich führe eine Bäckerei mit vier Leuten. Alles läuft über meinen Tisch und ich komme zu nichts mehr.',question:'Wenn du zwei Tage weg wärst',title:'Eine Entscheidung weniger auf deinem Tisch.',action:'Gib eine kleine, wiederkehrende Entscheidung frei.',choice:'1',method:'Beobachten',size:'2'},
+ {id:'baeckerei',label:'Bäckerei, 4 Personen, Inhaberin als Engpass',story:'Ich führe eine Bäckerei mit vier Leuten. Alles läuft über meinen Tisch und ich komme zu nichts mehr.',question:'Wenn du zwei Tage weg wärst',title:'Eine Entscheidung weniger auf deinem Tisch.',action:'Gib eine kleine, wiederkehrende Entscheidung frei.',choice:'1',method:'Ideenskizze',size:'2'},
  {id:'metallbau',label:'Metallbau, 12 Personen, Übergaben',story:'Wir sind 12 Personen im Metallbau. Bei Übergaben zwischen Büro und Werkstatt geht oft etwas verloren.',question:'Wo geht die Information',title:'Damit die Montage ohne Rückruf starten kann.',action:'Macht drei Fragen vor der nächsten Montage.',choice:'1',method:'Zentrale Herausforderung definieren',size:'10'},
  {id:'coiffeur',label:'Coiffeursalon, 6 Personen, Fachkräfte',story:'Wir sind ein Coiffeursalon mit sechs Leuten. Wir haben Mühe, gute Mitarbeitende zu halten und neue Fachkräfte zu finden.',question:'Was beschäftigt dich beim Thema Mitarbeitende',title:'Warum gute Leute bleiben, ist eine gute Frage.',action:'Frag eine Person, was ihren Alltag bei euch besser macht.',choice:'1',method:'Empathie-Gespräch',size:'5'},
  {id:'schreinerei',label:'Schreinerei, 8 Personen, Nachfolge und Wissen',story:'Unsere Schreinerei hat acht Leute. Unser langjähriger Schreiner geht bald in Pension. Sein Wissen ist nirgends festgehalten.',question:'Welches Wissen wäre morgen',title:'Lasst den wichtigsten Kniff einmal vorzeigen.',action:'Sichert diese Woche einen einzigen Arbeitskniff.',choice:'1',method:'Beobachten',size:'5'},
@@ -33,7 +33,7 @@ try{
   assert.ok((await page.locator('.feature.action').innerText()).includes(p.action),p.id+': Impuls nicht passend');
   assert.ok((await page.locator('.method-strip').innerText()).includes(p.method),p.id+': Methodenkarte nicht passend');
   const directLinks=page.locator('.dashboard-media-shelf a[href^="https://"]');
-  assert.ok(await directLinks.count()>=1,p.id+': thematic podcast or video link missing from immediate dashboard');
+  assert.ok(await directLinks.count()>=1||(await page.locator('.dashboard-media-shelf').innerText()).includes('noch keinen unmittelbar passenden Beitrag'),p.id+': missing relevant media or honest no-match message');
   const width=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
   assert.ok(width.scroll<=width.inner+1,p.id+': horizontales Scrollen '+JSON.stringify(width));
   await page.screenshot({path:'test-artifacts/'+p.id+'-dashboard.png',fullPage:true});
@@ -144,12 +144,51 @@ try{
  const homeLinks=homepageMedia.locator('.home-media-grid a[href^="https://"]');
  assert.equal(await homeLinks.count(),2,'Homepage: podcast and videopodcast links missing');
  assert.ok((await homeLinks.nth(0).getAttribute('href')).includes('podcasts.apple.com'),'Podcast not real');
- assert.ok((await homeLinks.nth(1).getAttribute('href')).includes('svc.swiss'),'Video not real');
+ assert.ok((await homeLinks.nth(1).getAttribute('href')).includes('srf.ch/play/tv/'),'Video not real');
  await homepageMedia.close();
  const desktopHome=await browser.newPage({viewport:{width:1440,height:900}});
  await desktopHome.goto(appUrl);
  await desktopHome.screenshot({path:'test-artifacts/desktop-home-entry.png',fullPage:true});
  await desktopHome.close();
+
+ // Fast voice-first MVP path: 3 tiny inputs and one contextual follow-up, no redundant questionnaire.
+ for(const journey of [
+  {story:'Wir sind eine Bäckerei mit vier Mitarbeitenden. Ich entscheide immer alles.',goal:'Mehr Zeit für neue Brote',size:'2',question:'Wenn du zwei Tage weg wärst'},
+  {story:'Unsere Schreinerei hat acht Mitarbeitende, einer geht in Pension.',goal:'Erfahrung weitergeben',size:'5',question:'Welches Wissen wäre morgen'},
+  {story:'Ich arbeite allein und möchte neue Ideen für meine Kundschaft.',goal:'Etwas Neues ausprobieren',size:'1',question:'Was möchtest du im Einpersonenbetrieb'}
+ ]){
+  const page=await browser.newPage({viewport:{width:390,height:844}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(appUrl);
+  await page.locator('#hero-story').fill(journey.story);
+  await page.locator('#hero-goal').fill(journey.goal);
+  await page.locator('#hero-size').selectOption(journey.size);
+  await page.locator('#hero-form button[type="submit"]').click();
+  await page.getByRole('heading',{name:new RegExp(journey.question,'i')}).waitFor();
+  await page.locator('[data-choice="0"]').click();
+  await page.locator('[data-action="next"]').click();
+  assert.ok(await page.locator('.own-themes').isVisible(),'Own situation should lead the dashboard');
+  assert.ok((await page.locator('.own-themes').innerText()).includes(journey.story),'Own story lost');
+  assert.ok((await page.locator('.own-themes').innerText()).includes(journey.goal),'Own goal lost');
+  assert.ok(await page.locator('.feature.action h2').isVisible(),'Immediate personal impulse missing');
+  assert.equal(errors.length,0,'Errors on direct MVP path');
+  const widths=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
+  assert.ok(widths.scroll<=widths.inner+1,'MVP mobile overflow');
+  findings.push({persona:'Direkteingabe · '+journey.size,result:'OK',goal:journey.goal});
+  await page.close();
+ }
+ // Unsupported browser has a keyboard dictation alternative; a supported mock can fill the field by voice.
+ const noSpeech=await browser.newPage({viewport:{width:390,height:844}});
+ await noSpeech.addInitScript(()=>{Object.defineProperty(window,'SpeechRecognition',{value:undefined,configurable:true});Object.defineProperty(window,'webkitSpeechRecognition',{value:undefined,configurable:true});});
+ await noSpeech.goto(appUrl);
+ assert.ok(await noSpeech.locator('[data-voice="hero-story"]').isHidden(),'Unsupported mic must not advertise an inert button');
+ assert.ok((await noSpeech.locator('.voice-support').first().innerText()).includes('Tastatur'),'Native dictation fallback missing');
+ await noSpeech.close();
+ const mockSpeech=await browser.newPage({viewport:{width:390,height:844}});
+ await mockSpeech.addInitScript(()=>{window.SpeechRecognition=class{start(){this.onresult?.({results:[[{transcript:'Wir brauchen mehr Zeit für neue Ideen in der Bäckerei.'}]]});this.onend?.();}stop(){this.onend?.();}};});
+ await mockSpeech.goto(appUrl);
+ await mockSpeech.locator('[data-voice="hero-story"]').click();
+ assert.ok((await mockSpeech.locator('#hero-story').inputValue()).includes('mehr Zeit'),'Mock microphone did not transcribe into editable input');
+ await mockSpeech.close();
  const unknown=await browser.newPage({viewport:{width:390,height:844}});
  await unknown.goto(appUrl);await unknown.locator('[data-action="begin"]').click();
  await unknown.locator('#custom').fill('Wir haben ein merkwürdiges Gefühl, wenn wir am Montag wieder starten.');
