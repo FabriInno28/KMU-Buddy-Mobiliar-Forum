@@ -7,7 +7,7 @@ const appUrl=pathToFileURL(resolve('index.html')).href;
 mkdirSync('test-artifacts',{recursive:true});
 const examples=[
  {id:'baeckerei',label:'Bäckerei, 4 Personen, Inhaberin als Engpass',story:'Ich führe eine Bäckerei mit vier Leuten. Alles läuft über meinen Tisch und ich komme zu nichts mehr.',question:'Wenn du zwei Tage weg wärst',title:'Eine Entscheidung weniger auf deinem Tisch.',action:'Gib eine kleine, wiederkehrende Entscheidung frei.',choice:'1',method:'Ideenskizze',size:'2'},
- {id:'metallbau',label:'Metallbau, 12 Personen, Übergaben',story:'Wir sind 12 Personen im Metallbau. Bei Übergaben zwischen Büro und Werkstatt geht oft etwas verloren.',question:'Wo geht die Information',title:'Damit die Montage ohne Rückruf starten kann.',action:'Macht drei Fragen vor der nächsten Montage.',choice:'1',method:'Zentrale Herausforderung definieren',size:'10'},
+ {id:'metallbau',label:'Metallbau, 12 Personen, Übergaben',story:'Wir sind 12 Personen im Metallbau. Bei Übergaben zwischen Büro und Werkstatt geht oft etwas verloren.',question:'Wo geht die Information',title:'Damit die Montage ohne Rückruf starten kann.',action:'Macht drei Fragen vor der nächsten Montage.',choice:'1',method:'Aktionspunkte',size:'10'},
  {id:'coiffeur',label:'Coiffeursalon, 6 Personen, Fachkräfte',story:'Wir sind ein Coiffeursalon mit sechs Leuten. Wir haben Mühe, gute Mitarbeitende zu halten und neue Fachkräfte zu finden.',question:'Was beschäftigt dich beim Thema Mitarbeitende',title:'Warum gute Leute bleiben, ist eine gute Frage.',action:'Frag eine Person, was ihren Alltag bei euch besser macht.',choice:'1',method:'Empathie-Gespräch',size:'5'},
  {id:'schreinerei',label:'Schreinerei, 8 Personen, Nachfolge und Wissen',story:'Unsere Schreinerei hat acht Leute. Unser langjähriger Schreiner geht bald in Pension. Sein Wissen ist nirgends festgehalten.',question:'Welches Wissen wäre morgen',title:'Lasst den wichtigsten Kniff einmal vorzeigen.',action:'Sichert diese Woche einen einzigen Arbeitskniff.',choice:'1',method:'Beobachten',size:'5'},
 ];
@@ -143,7 +143,7 @@ try{
  await homepageMedia.screenshot({path:'test-artifacts/mobile-home-entry.png',fullPage:true});
  const homeLinks=homepageMedia.locator('.home-media-grid a[href^="https://"]');
  assert.equal(await homeLinks.count(),2,'Homepage: podcast and videopodcast links missing');
- assert.ok((await homeLinks.nth(0).getAttribute('href')).includes('podcasts.apple.com'),'Podcast not real');
+ assert.ok((await homeLinks.nth(0).getAttribute('href')).includes('srf.ch/audio/input/'),'Podcast not linked to direct SRF episode');
  assert.ok((await homeLinks.nth(1).getAttribute('href')).includes('srf.ch/play/tv/'),'Video not real');
  await homepageMedia.close();
  const desktopHome=await browser.newPage({viewport:{width:1440,height:900}});
