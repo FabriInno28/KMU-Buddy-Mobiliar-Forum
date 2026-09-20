@@ -12,6 +12,8 @@ jobs:
           node-version: '22'
       - name: HTML und JavaScript prüfen
         run: node tests/smoke.mjs
+      - name: Kostenlosen Cloudflare KI Pilot ohne echte Modellaufrufe prüfen
+        run: node tests/cloudflare-free.mjs
   personas:
     runs-on: ubuntu-latest
     timeout-minutes: 15
