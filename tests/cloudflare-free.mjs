@@ -48,7 +48,7 @@ for(const p of personas){
  assert.equal(b.status,200,p.id+" dashboard");
  const result=await b.json();
  assert.equal(result.phase,"dashboard");assert.equal(result.steps.length,3);
- assert.ok(result.title.includes(p.id==="solo"?"Schreinerei":p.id==="coiffeur"?"Coiffeur":p.id==="metallbau"?"Metallbau":"Bäckerei"));
+ assert.ok(result.title.includes((p.id==="solo"||p.id==="schreinerei")?"Schreinerei":p.id==="coiffeur"?"Coiffeur":p.id==="metallbau"?"Metallbau":"Bäckerei"));
  assert.ok(!result.method||result.method.minPeople<=p.people);
  assert.ok(result.media&&result.media.url.startsWith("https://"));
 }
