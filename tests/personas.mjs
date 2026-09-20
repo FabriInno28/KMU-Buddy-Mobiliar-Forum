@@ -200,5 +200,50 @@ try{
  assert.ok(!(await unknown.locator('.dash-hero').innerText()).includes('Bei euch läuft vieles gut'),'Unrecognized problem must not be called fine');
  findings.push({persona:'Nicht erkannter Freitext',result:'OK'});
  await unknown.close();
+
+ // Seven real working guides instead of click-through method summaries; the interview is tailored to the customer's issue.
+ const workshop=await browser.newPage({viewport:{width:390,height:844}});
+ const workshopErrors=[];workshop.on('pageerror',e=>workshopErrors.push(e.message));
+ await workshop.goto(appUrl);
+ await workshop.locator('#hero-story').fill('Im Quartierladen kommen weniger Stammkundinnen und Stammkunden als früher.');
+ await workshop.locator('#hero-goal').fill('Verstehen, weshalb die Leute seltener einkaufen');
+ await workshop.locator('#hero-size').selectOption('2');
+ await workshop.locator('#hero-form button[type="submit"]').click();
+ await workshop.locator('[data-choice="1"]').click();
+ await workshop.locator('[data-action="next"]').click();
+ await workshop.locator('.dash-tabs [data-tab="methods"]').click();
+ assert.ok((await workshop.locator('.library-head').innerText()).includes('Sieben ausgearbeitete Methoden'),'No extended method overview');
+ await workshop.locator('[data-method="empathie"]').first().click();
+ const dialog=workshop.locator('.method-workshop');
+ assert.ok(await dialog.isVisible(),'Interview worksheet did not open');
+ assert.ok((await dialog.innerText()).includes('Quartierladen'),'The method must use the user's own issue');
+ assert.ok((await dialog.innerText()).includes('Stammkund'),'Interview questions must be tailored to demand context');
+ assert.equal(await dialog.locator('.guide-questions li').count(),6,'Not six themed interview questions');
+ assert.ok((await dialog.innerText()).includes('So könntest du die Person anfragen'),'Concrete contact invitation missing');
+ assert.ok((await dialog.innerText()).includes('AUSWERTEN'),'Practical analysis missing');
+ assert.equal(await dialog.locator('textarea[data-method-note]').count(),3,'Notepad does not contain all three reflection questions');
+ await dialog.locator('[data-method-note="empathie"][data-note-key="beobachtung"]').fill('Ein konkreter Einkauf war umständlich.');
+ await dialog.locator('[data-action="close"]').click();
+ await workshop.locator('[data-method="empathie"]').first().click();
+ assert.ok((await workshop.locator('[data-method-note="empathie"][data-note-key="beobachtung"]').inputValue()).includes('umständlich'),'Notes lost on modal close');
+ await workshop.locator('[data-action="close"]').click();
+ const fullGuides=['empathie','beobachten','fragen','annahmen','skizze','aktion','testen'];
+ const details=workshop.locator('.method-all').first();await details.locator('summary').click();
+ for(const id of fullGuides){
+  const card=workshop.locator('[data-method="'+id+'"]').first();
+  assert.ok(await card.count()>=1,'Full method card missing '+id);
+  await card.click();
+  assert.ok(await workshop.locator('.method-workshop .guide-notes').isVisible(),'Worksheet missing '+id);
+  assert.ok((await workshop.locator('.method-workshop').innerText()).includes('VORBEREITEN'),'Preparation missing '+id);
+  assert.ok((await workshop.locator('.method-workshop').innerText()).includes('AUSWERTEN'),'Evaluation missing '+id);
+  assert.ok(await workshop.locator('[data-method-copy="report"]').isVisible(),'Takeaway is not copyable '+id);
+  await workshop.locator('.method-workshop [data-action="close"]').click();
+ }
+ assert.equal(workshopErrors.length,0,'Method guides raised client errors');
+ const allLinks=await workshop.locator('a[href^="http"]').evaluateAll(nodes=>nodes.map(n=>n.href));
+ assert.ok(allLinks.every(u=>!u.includes('zkb.ch')&&!u.includes('podcasts.apple.com')),'Competing financial provider or indirect podcast link remains');
+ await workshop.screenshot({path:'test-artifacts/interview-method-guide.png',fullPage:true});
+ findings.push({persona:'MVP1 · 7 Praxisguides mit themenbezogenem Interview',result:'OK',questionCount:6,notes:'local'});
+ await workshop.close();
  console.log(JSON.stringify({result:'PASS',tested:findings.length,findings},null,2));
 }finally{await browser.close();}
