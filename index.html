@@ -189,7 +189,7 @@ const RECOGNITION_RULES=[
 const SITUATION_RULES=[
  ['succession',/nachfolg|pension|ruhestand|wissen.*(weg|verlier|weitergeb)|schlüsselperson|schluesselperson/i],
  ['cyber',/phish|cyber|hack|ransom|passw[oö]rt|backup|datenleck|betrugs?mail/i],
- ['staff',/mitarbeitende.*(find|halt|kündig|fehl|such)|personal.*(find|halt|such|fluktu)|fachkr[aä]ft|rekrut|bewerb|personalausfall/i],
+ ['staff',/mitarbeitend\w*.*(find|halt|k[üu]ndig|fehl|such|geh|verlass|wechsel|bleib)|(?:geh\w*|verlass\w*|verlier\w*|halt\w*).*mitarbeitend|personal.*(find|halt|such|fluktu)|fachkr[aä]ft|rekrut|bewerb|personalausfall/i],
  ['handoff',/[üu]bergab|schnittstell|werkstatt.*(montage|b[üu]ro)|montage.*(b[üu]ro|werkstatt)|zust[aä]ndig|absprachen|aneinander vorbei/i],
  ['owner',/alles.*(meinen|meinem|mir|chef|inhaber).*tisch|alles.*[üu]ber mich|ohne mich.*(nicht|nichts)|ich.*(alles|jeden).*entscheid|niemand.*(ohne mich|allein) entscheid|ich komme zu nichts|delegier/i],
  ['digital',/k[üu]nstlich.*intelligenz|\bki\b|chatgpt|digital|automation|routine|administration|software|offerte.*(schreib|automat)/i],
