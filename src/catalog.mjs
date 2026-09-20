@@ -175,9 +175,9 @@ export const METHODS = [
     "time": "10 Min. Einführung + 10–15 Min. je Skizze",
     "why": "Eine Idee sichtbar und verständlich machen",
     "steps": [
-      "Notiert Name und Nutzen eurer Idee auf ein Blatt.",
-      "Zeichnet die Idee und ergänzt wenige Stichwörter.",
-      "Stellt die Skizzen vor und entscheidet, welche Idee ihr testet."
+      "Notiere den Namen der Idee und für wen sie gedacht ist.",
+      "Zeichne die Idee und ergänze ihren wichtigsten Nutzen.",
+      "Zeige die Skizze später einer Person aus deiner Zielgruppe und frage, was sie versteht."
     ]
   },
   {
