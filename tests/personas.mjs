@@ -37,7 +37,7 @@ try{
   const width=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
   assert.ok(width.scroll<=width.inner+1,p.id+': horizontales Scrollen '+JSON.stringify(width));
   await page.screenshot({path:'test-artifacts/'+p.id+'-dashboard.png',fullPage:true});
-  await page.locator('[data-tab="media"]').click();
+  await page.locator('.dash-tabs [data-tab="media"]').click();
   assert.ok(await page.locator('.editorial-media-card a[href^="https://"]').count()>=8,p.id+': complete media library missing');
   await page.locator('[data-tab="methods"]').click();
   await page.locator('[data-method]').first().click();
