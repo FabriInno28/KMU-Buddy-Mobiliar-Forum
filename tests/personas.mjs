@@ -55,5 +55,31 @@ try{
  assert.ok(!((await solo.locator('.method-strip').innerText()).includes('10–30 Personen')),'Solo: ungeeignete Gruppenmethode');
  findings.push({persona:'Einpersonenbetrieb',result:'OK'});
  await solo.close();
+ // A correction must really change the result, not merely rephrase the same topic.
+ for(const p of examples){
+  const page=await browser.newPage({viewport:{width:390,height:844}});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(appUrl);
+  await page.locator('[data-action="begin"]').click();
+  await page.locator('#custom').fill(p.story);
+  await page.locator('[data-action="next"]').click();
+  await page.locator('[data-choice="0"]').click();
+  await page.locator('[data-action="next"]').click();
+  await page.locator('[data-size="'+p.size+'"]').click();
+  await page.locator('[data-action="next"]').click();
+  const beforeTitle=(await page.locator('.dash-hero h1').innerText()).trim();
+  const beforeAction=(await page.locator('.feature.action h2').innerText()).trim();
+  await page.locator('[data-action="refine"]').click();
+  await page.locator('[data-choice="1"]').click();
+  await page.locator('[data-action="next"]').click();
+  await page.locator('[data-action="next"]').click();
+  const afterTitle=(await page.locator('.dash-hero h1').innerText()).trim();
+  const afterAction=(await page.locator('.feature.action h2').innerText()).trim();
+  assert.notEqual(afterTitle,beforeTitle,p.id+': answer correction did not change the contextual headline');
+  assert.notEqual(afterAction,beforeAction,p.id+': answer correction did not change the suggested action');
+  assert.equal(errors.length,0,p.id+': script errors on correction');
+  findings.push({persona:p.label+' · Antwort korrigiert',result:'OK',before:beforeTitle,after:afterTitle});
+  await page.close();
+ }
  console.log(JSON.stringify({result:'PASS',tested:findings.length,findings},null,2));
 }finally{await browser.close();}
