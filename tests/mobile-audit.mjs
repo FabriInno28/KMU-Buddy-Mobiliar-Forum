@@ -43,7 +43,13 @@ try {
   await page.locator('[data-choice="1"]').click();
   await page.locator('[data-action="next"]').click();
   assert.ok(await page.locator('.feature.action h2').isVisible(),device.id+': no immediate action');
+  const firstAction=await page.locator('.dash-quick [data-action="open-try"]').boundingBox();
+  assert.ok(firstAction,device.id+': first action is missing');
+  if(device.id.startsWith('iphone'))assert.ok(firstAction.y+firstAction.height<=device.height,device.id+': first useful action still below fold '+JSON.stringify(firstAction));
   await page.screenshot({path:'test-artifacts/mobile-audit/'+device.id+'-dashboard.png'});
+  await page.locator('.dash-quick [data-action="open-try"]').click();
+  assert.ok(await page.locator('.modal').isVisible(),device.id+': direct action does not open');
+  await page.locator('.modal [data-action="close"]').first().click();
   const dash=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,viewport:window.innerWidth,methodButton:(()=>{const el=document.querySelector('.method-strip button'),b=el?.getBoundingClientRect();return b?{left:b.left,right:b.right,width:b.width,height:b.height}:null})()}));
   assert.ok(dash.scrollWidth<=dash.viewport+1,device.id+': horizontal overflow dashboard '+JSON.stringify(dash));
   assert.ok(dash.methodButton&&dash.methodButton.left>=-1&&dash.methodButton.right<=dash.viewport+1,device.id+': method CTA clipped');
