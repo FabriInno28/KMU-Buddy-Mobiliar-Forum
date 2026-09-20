@@ -81,5 +81,59 @@ try{
   findings.push({persona:p.label+' · Antwort korrigiert',result:'OK',before:beforeTitle,after:afterTitle});
   await page.close();
  }
+
+ const newCases=[
+  {id:'cafe_kosten',story:'Wir sind ein Café mit drei Leuten. Die Einkaufspreise steigen und es bleibt immer weniger übrig.',size:'2',choice:'0',question:'Wo spürst du den Kostendruck',title:'Vielleicht liegt die Überraschung in einem Einkauf.',action:'Vergleicht die Kosten eines häufigen Produkts.',method:'Fragen-Landkarte'},
+  {id:'velowerkstatt_auflage',story:'Unsere Velowerkstatt hat zwei Mitarbeitende. Eine neue Vorschrift der Behörde ist für uns unklar.',size:'2',choice:'0',question:'Was ist bei euch gerade unklar',title:'Vom langen Text zu einer einzigen Frage.',action:'Markiert eine unklare Passage.',method:'Fragen-Landkarte'},
+  {id:'quartierladen_nachfrage',story:'Wir betreiben einen Quartierladen zu dritt und erhalten weniger neue Anfragen als früher.',size:'2',choice:'0',question:'Wo merkst du die schwächere Nachfrage',title:'Woher kam die letzte neue Anfrage?',action:'Schaut auf eure drei letzten neuen Kontakte.',method:'Empathie-Gespräch'},
+  {id:'einpersonenbetrieb_neue_ideen',story:'Ich bin selbstständig und arbeite allein. Ich möchte wieder Raum für neue Ideen haben.',size:'1',choice:'1',question:'Was möchtest du im Einpersonenbetrieb',title:'Eine Idee braucht zuerst einen kleinen Termin.',action:'Reserviere dir 15 Minuten für eine Ideenskizze.',method:'Ideenskizze'}
+ ];
+ for(const p of newCases){
+  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(appUrl);
+  await page.locator('[data-action="begin"]').click();
+  await page.locator('#custom').fill(p.story);
+  await page.locator('[data-action="next"]').click();
+  await page.getByRole('heading',{name:new RegExp(p.question,'i')}).waitFor();
+  await page.locator('[data-choice="'+p.choice+'"]').click();
+  await page.locator('[data-action="next"]').click();
+  await page.locator('[data-size="'+p.size+'"]').click();
+  await page.locator('[data-action="next"]').click();
+  assert.equal((await page.locator('.dash-hero h1').innerText()).trim(),p.title,p.id+': wrong interpretation');
+  assert.ok((await page.locator('.feature.action').innerText()).includes(p.action),p.id+': wrong action');
+  assert.ok((await page.locator('.method-strip').innerText()).includes(p.method),p.id+': unsuitable method');
+  const widths=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
+  assert.ok(widths.scroll<=widths.inner+1,p.id+': horizontal scroll '+JSON.stringify(widths));
+  await page.locator('[data-feedback="no"]').click();
+  assert.ok(await page.getByRole('button',{name:/Antwort präzisieren/}).count()>=1,p.id+': missing correction after negative feedback');
+  await page.screenshot({path:'test-artifacts/'+p.id+'-dashboard.png',fullPage:true});
+  assert.equal(errors.length,0,p.id+': '+errors.join(' | '));
+  findings.push({persona:p.id,result:'OK',impulse:p.action,method:p.method,viewport:widths.inner});
+  await page.close();
+ }
+ for(const example of ['backerei','laden','coiffeur','schreinerei']){
+  const page=await browser.newPage({viewport:{width:390,height:844}});
+  await page.goto(appUrl);
+  await page.locator('[data-preview="'+example+'"]').click();
+  assert.ok(await page.locator('.dash-hero h1').isVisible(),example+': sample did not open');
+  assert.ok(await page.locator('.feature.action h2').isVisible(),example+': sample impulse missing');
+  assert.ok(await page.locator('.method-strip').isVisible(),example+': sample method missing');
+  const w=await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1);
+  assert.ok(w,example+': preview horizontal scrolling');
+  findings.push({persona:'Beispielvorschau '+example,result:'OK'});
+  await page.close();
+ }
+ const unknown=await browser.newPage({viewport:{width:390,height:844}});
+ await unknown.goto(appUrl);await unknown.locator('[data-action="begin"]').click();
+ await unknown.locator('#custom').fill('Wir haben ein merkwürdiges Gefühl, wenn wir am Montag wieder starten.');
+ await unknown.locator('[data-action="next"]').click();
+ assert.ok(await unknown.getByRole('heading',{name:/Wo macht sich das bei dir im Alltag/}).isVisible(),'Unknown text must not be misclassified');
+ await unknown.locator('[data-choice="0"]').click();
+ await unknown.locator('[data-action="next"]').click();
+ await unknown.locator('[data-size="2"]').click();await unknown.locator('[data-action="next"]').click();
+ assert.ok(!(await unknown.locator('.dash-hero').innerText()).includes('Bei euch läuft vieles gut'),'Unrecognized problem must not be called fine');
+ findings.push({persona:'Nicht erkannter Freitext',result:'OK'});
+ await unknown.close();
  console.log(JSON.stringify({result:'PASS',tested:findings.length,findings},null,2));
 }finally{await browser.close();}
