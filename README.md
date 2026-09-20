@@ -13,6 +13,14 @@ Ein eigenständiges, responsives Konzept für die Skalierungsinitiative des Mobi
 3. Im Dashboard den Impuls ausprobieren und weitere passende Möglichkeiten entdecken.
 4. «Neues Gespräch» erlaubt einen Vergleich der verschiedenen Themenpfade.
 
+## Kostenlose KMU-Realitäten-Demo (September 2026)
+
+Diese GitHub-Pages-Version benötigt **keinen API-Schlüssel, kein ChatGPT-Abo und kein kostenpflichtiges Hosting**. Die Anwendung läuft vollständig im Browser. Sie führt mit einfachen, offengelegten Regeln durch typische Situationen kleiner Schweizer Unternehmen; **sie ist kein echtes KI-Modell und kann freie Texte nicht zuverlässig semantisch verstehen**.
+
+Neu: Die freie Alltagsschilderung steht im Vordergrund, zusätzlich können vier rein fiktive kleine KMU als Beispiele geöffnet werden. Weitere Szenarien behandeln schwächere Nachfrage, Kostendruck, unklare Anforderungen und den Einpersonenbetrieb. Die Antwort auf die Rückfrage beeinflusst den konkreten Impuls; die Person kann eine unpassende Einordnung korrigieren oder freiwillig in der Browseransicht Feedback geben. Kein Gespräch und kein Feedback werden an einen Server gesendet.
+
+Die öffentlichen Schweizer Studien mit Population, Zeitpunkt und Geltungsgrenzen sowie die fiktiven Testfälle stehen in [RESEARCH-CH.md](RESEARCH-CH.md). Interne Sotomo-Präsentationen, Original-Materialkarten und reale KMU-Daten bleiben ausserhalb dieses öffentlichen Repositories.
+
 ## Was bereits funktioniert
 
 - Responsives Gespräch mit freier Texteingabe, Stichworterkennung, gezielter Rückfrage und Möglichkeit zur Korrektur der Einordnung. **Die Erkennung ist regelbasiert, nicht generative KI.**
