@@ -15,16 +15,18 @@ Ein eigenständiges, responsives Konzept für die Skalierungsinitiative des Mobi
 
 ## Was bereits funktioniert
 
-- Responsives Gespräch mit fünf vordefinierten Bedürfnisthemen und je einer passenden Rückfrage.
-- Ein persönliches Dashboard auf Grundlage der ausgewählten Themen, des gewählten Tempos und eines optionalen Betriebsnamens.
-- Sofortimpulse und konkrete Schrittfolgen für alle fünf Themen.
-- Interaktive Checkliste, kopierbarer Impuls, Medienvorschau, Forum, Peer und Ökosystem als klickbare Konzeptflächen.
-- Keine Speicherung oder Übertragung von Eingaben auf einen Server.
-- Browserprüfungen für Start, Gespräch, Themenwechsel, Dashboard, Medien, Begegnungen und weitere Möglichkeiten.
+- Responsives Gespräch mit freier Texteingabe, Stichworterkennung, gezielter Rückfrage und Möglichkeit zur Korrektur der Einordnung. **Die Erkennung ist regelbasiert, nicht generative KI.**
+- Antwortspezifische Dashboards für acht typische Situationen sowie thematisch passende Kurzimpulse und Schrittfolgen.
+- 24 vereinfachte Mobiliar Forum Methodenkarten mit Zeit- und Gruppengrössenangaben; Empfehlung berücksichtigt die angegebene Teamgrösse.
+- Reale externe Podcast- und Videopodcast-Beispiele, mit Quelle und Link zur Originalseite. Eigene Medienideen sind gesondert als noch nicht produziert gekennzeichnet.
+- Interaktive Checkliste, kopierbarer Impuls, Forum, Peer und Ökosystem als klar markierte Konzeptflächen. Keine Buchungen oder Live-Empfehlungen.
+- Keine Speicherung oder Übertragung von Gesprächseingaben auf einen Server. Externe Inhalte werden erst beim bewussten Öffnen eines Links aufgerufen.
+- Automatische Browserprüfungen mit vier fiktiven KMU, einem Einpersonenbetrieb und einer Korrektur der Antworten; technische Prüfungen und Screenshots in GitHub Actions.
+- Öffentliche Forschungsgrundlage und Geltungsgrenzen: [RESEARCH-CH.md](RESEARCH-CH.md).
 
 ## Was dieser Stand bewusst NICHT behauptet
 
-Kein Live KI Gespräch; freie Texte werden noch nicht semantisch interpretiert. Keine echten Podcasts oder Videos im Produkt. Keine reale Buchung, keine echten Peer Gruppen und keine verifizierte individuelle Förderempfehlung. Keine offiziellen Designbibliotheken oder markengeschützten Logos eingebunden. Keine Anbindung an Systeme der Mobiliar. Der Prototyp ist eine öffentliche, rein fiktive Konzeptdemo und noch keine freigegebene Mobiliar Anwendung.
+Kein Live KI Gespräch; freie Texte werden anhand begrenzter Stichwortmuster erkannt, nicht mit echter Sprachintelligenz verstanden. Externe Medien sind nicht redaktionell durch die Mobiliar freigegeben. Keine eigene Audio- oder Videoproduktion, keine reale Buchung, keine echten Peer Gruppen und keine verifizierte individuelle Förderempfehlung. Keine offiziellen Designbibliotheken oder markengeschützten Logos eingebunden. Keine Anbindung an Systeme der Mobiliar. Der Prototyp ist eine öffentliche, rein fiktive Konzeptdemo und noch keine freigegebene Mobiliar Anwendung.
 
 ## Zusammenarbeit mit Codex
 
@@ -32,7 +34,7 @@ Kein Live KI Gespräch; freie Texte werden noch nicht semantisch interpretiert. 
 
 ## Test
 
-Mit installiertem Python Playwright und Chromium: `python test_smoke.py`. Das Testskript verweist auf `/mnt/data/kmu-buddy-studio-v3/index.html` als aktuellen Erstellungsort; in einer GitHub Umgebung den Pfad auf die lokale Repositorydatei umstellen oder `Path(__file__).with_name('index.html')` verwenden.
+Die auf GitHub automatisch laufenden Tests liegen in `tests/smoke.mjs` und `tests/personas.mjs`. Lokal: `node tests/smoke.mjs` und mit installiertem Playwright samt Chromium `node tests/personas.mjs`.
 
 ## Zusammenarbeit und Daten
 
