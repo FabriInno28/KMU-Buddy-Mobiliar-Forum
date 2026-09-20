@@ -7,7 +7,19 @@ function sameSecret(a,b){if(typeof a!=="string"||typeof b!=="string")return fals
 export function eligibleMethods(size,story,answer){
  const q=(story+" "+answer).toLowerCase();
  const tags=[[/team|kolleg|mitarbeit|verantwort|entscheid|personal|nachfolg|pension|wissen|übergab|schnittstell/,"team"],[/kund|umsatz|auftrag|anfrag|markt|verkauf|angebot/,"customers"],[/\bki\b|software|digital|automat|offert|administration/,"digital"],[/druck|zeit|stress|unsicher|überlast|ressourcen|kosten/,"pressure"],[/neu|idee|neugier|ausprobier|entwickel/,"curious"]].filter(([re])=>re.test(q)).map(x=>x[1]);
- return METHODS.filter(m=>m.minPeople<=(size||2)).map(m=>({m,score:tags.reduce((n,t)=>n+(METHOD_TOPICS[m.id]||[]).includes(t),0)})).sort((a,b)=>b.score-a.score).slice(0,9).map(x=>x.m);
+ const lower=q;
+ const priority=[
+  [/\ballein\b|einpersonen|selbständig ohne mitarbeit/,["skizze"]],
+  [/übergab|schnittstell|werkstatt|montage/,["challenge","aktion","fragen","beobachten"]],
+  [/pension|nachfolg|ruhestand|wissensverlust|kniff|wissen weitergeb/,["beobachten","aktion","fragen"]],
+  [/kündig|fachkräft|rekrut|mitarbeit.*halt|team.*überlast/,["empathie","feedback","fragen"]],
+  [/alles.*tisch|alles.*selbst|delegier|entscheide|bestellung|bestellungen/,["aktion","fragen","beobachten"]],
+  [/\bki\b|software|digital|automatis/,["rollbrett","annahmen","skizze"]],
+  [/kund|anfrag|neue.*auftrag|marketing/,["empathie","reise","skizze"]]
+ ];
+ const first=priority.filter(([re])=>re.test(lower)).flatMap(([,ids])=>ids).map(id=>METHODS.find(m=>m.id===id)).filter(Boolean);
+ const ranked=METHODS.map(m=>({m,score:tags.reduce((n,t)=>n+(METHOD_TOPICS[m.id]||[]).includes(t),0)})).sort((a,b)=>b.score-a.score).map(x=>x.m);
+ return [...new Map([...first,...ranked].map(m=>[m.id,m])).values()].filter(m=>m.minPeople<=(size||2)).slice(0,9);
 }
 const SYSTEM=[
  "Du bist KMU Buddy für kleine Schweizer Betriebe mit oft 1–9 Menschen. Antworte warm, klar und konkret in Schweizer Hochdeutsch mit du. Keine Beratersprache, leere Lobhudelei oder Diagnosen.",
