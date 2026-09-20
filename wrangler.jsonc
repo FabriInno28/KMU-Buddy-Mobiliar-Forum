@@ -1,0 +1,16 @@
+{
+  "name": "kmu-buddy-gratis-ki-labor",
+  "main": "./src/worker.mjs",
+  "compatibility_date": "2026-09-20",
+  "workers_dev": true,
+  "ai": {
+    "binding": "AI"
+  },
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*"
+    ]
+  }
+}
