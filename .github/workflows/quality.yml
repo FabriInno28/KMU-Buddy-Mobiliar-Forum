@@ -12,6 +12,8 @@ jobs:
           node-version: '22'
       - name: HTML und JavaScript prüfen
         run: node tests/smoke.mjs
+      - name: KI Pilot ohne API Schlüssel testen
+        run: node tests/ai.mjs
   personas:
     runs-on: ubuntu-latest
     timeout-minutes: 15
