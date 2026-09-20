@@ -167,6 +167,8 @@ try{
   await page.getByRole('heading',{name:new RegExp(journey.question,'i')}).waitFor();
   await page.locator('[data-choice="0"]').click();
   await page.locator('[data-action="next"]').click();
+  assert.ok(await page.locator('.dash-quick [data-action="open-try"]').isVisible(),'First actionable step is not visible');
+  await page.locator('.own-theme-details summary').click();
   assert.ok(await page.locator('.own-themes').isVisible(),'Own situation should lead the dashboard');
   assert.ok((await page.locator('.own-themes').innerText()).includes(journey.story),'Own story lost');
   assert.ok((await page.locator('.own-themes').innerText()).includes(journey.goal),'Own goal lost');
