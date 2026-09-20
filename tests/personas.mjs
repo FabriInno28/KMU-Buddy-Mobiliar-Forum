@@ -32,11 +32,13 @@ try{
   assert.equal((await hero.innerText()).trim(),p.title,p.id+': falsche persönliche Einordnung');
   assert.ok((await page.locator('.feature.action').innerText()).includes(p.action),p.id+': Impuls nicht passend');
   assert.ok((await page.locator('.method-strip').innerText()).includes(p.method),p.id+': Methodenkarte nicht passend');
+  const directLinks=page.locator('.dashboard-media-shelf a[href^="https://"]');
+  assert.ok(await directLinks.count()>=1,p.id+': thematic podcast or video link missing from immediate dashboard');
   const width=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
   assert.ok(width.scroll<=width.inner+1,p.id+': horizontales Scrollen '+JSON.stringify(width));
   await page.screenshot({path:'test-artifacts/'+p.id+'-dashboard.png',fullPage:true});
   await page.locator('[data-tab="media"]').click();
-  assert.ok(await page.locator('[href^="https://"]').count()>=2,p.id+': Medien fehlen');
+  assert.ok(await page.locator('.editorial-media-card a[href^="https://"]').count()>=8,p.id+': complete media library missing');
   await page.locator('[data-tab="methods"]').click();
   await page.locator('[data-method]').first().click();
   assert.ok(await page.locator('.method-modal').isVisible(),p.id+': Methodenkarte öffnet nicht');
@@ -112,18 +114,37 @@ try{
   findings.push({persona:p.id,result:'OK',impulse:p.action,method:p.method,viewport:widths.inner});
   await page.close();
  }
- for(const example of ['backerei','laden','coiffeur','schreinerei']){
+ // Free-text entry must be first-class on the landing page, not buried below samples.
+ const entryCases=[
+  {id:'landing_baeckerei',story:'Wir sind eine Bäckerei mit vier Leuten. Alles läuft über meinen Tisch.',question:'Wenn du zwei Tage weg wärst'},
+  {id:'landing_laden',story:'Wir sind ein Quartierladen mit drei Leuten und haben weniger neue Kundenanfragen.',question:'Wo merkst du die schwächere Nachfrage'},
+  {id:'landing_coiffeur',story:'Im Coiffeursalon gehen gute Mitarbeitende wieder.',question:'Was beschäftigt dich beim Thema Mitarbeitende'},
+  {id:'landing_schreinerei',story:'Unser Schreiner geht bald in Pension und sein Wissen ist kaum festgehalten.',question:'Welches Wissen wäre morgen'}
+ ];
+ for(const ex of entryCases){
   const page=await browser.newPage({viewport:{width:390,height:844}});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(appUrl);
-  await page.locator('[data-preview="'+example+'"]').click();
-  assert.ok(await page.locator('.dash-hero h1').isVisible(),example+': sample did not open');
-  assert.ok(await page.locator('.feature.action h2').isVisible(),example+': sample impulse missing');
-  assert.ok(await page.locator('.method-strip').isVisible(),example+': sample method missing');
-  const w=await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1);
-  assert.ok(w,example+': preview horizontal scrolling');
-  findings.push({persona:'Beispielvorschau '+example,result:'OK'});
+  const input=page.locator('#hero-story');
+  assert.ok(await input.isVisible(),ex.id+': direct text field missing on homepage');
+  await input.fill(ex.story);
+  await page.locator('#hero-form button[type="submit"]').click();
+  await page.getByRole('heading',{name:new RegExp(ex.question,'i')}).waitFor();
+  assert.ok((await page.locator('body').innerText()).includes(ex.story.slice(0,35)),ex.id+': story lost');
+  assert.equal(errors.length,0,ex.id+': script errors');
+  const widths=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
+  assert.ok(widths.scroll<=widths.inner+1,ex.id+': horizontal scrolling');
+  findings.push({persona:ex.id,result:'OK',entry:'Freitext direkt auf Startseite'});
   await page.close();
  }
+ // The original podcast and video links must be clickable without entering a conversation.
+ const homepageMedia=await browser.newPage({viewport:{width:390,height:844}});
+ await homepageMedia.goto(appUrl);
+ const homeLinks=homepageMedia.locator('.home-media-grid a[href^="https://"]');
+ assert.equal(await homeLinks.count(),2,'Homepage: podcast and videopodcast links missing');
+ assert.ok((await homeLinks.nth(0).getAttribute('href')).includes('podcasts.apple.com'),'Podcast not real');
+ assert.ok((await homeLinks.nth(1).getAttribute('href')).includes('svc.swiss'),'Video not real');
+ await homepageMedia.close();
  const unknown=await browser.newPage({viewport:{width:390,height:844}});
  await unknown.goto(appUrl);await unknown.locator('[data-action="begin"]').click();
  await unknown.locator('#custom').fill('Wir haben ein merkwürdiges Gefühl, wenn wir am Montag wieder starten.');
