@@ -13,9 +13,9 @@ Stand: 20. September 2026 · ausschliesslich öffentlich zugängliche Quellen im
 | [KMU-Portal des Bundes – Nachfolgeregelungen](https://www.kmu.admin.ch/de/kmu-in-zahlen-nachfolgeregelungen) | Übersicht über Erhebungen mit verschiedenen Jahren und Unternehmensgrössen | Nachfolge und Wissenstransfer als eigenes Anliegen behandeln; eine kurze Methode zur Wissensübergabe ist **keine** vollständige Nachfolgeberatung. |
 | [KMU-Portal des Bundes – strategische Herausforderungen](https://www.kmu.admin.ch/de/kmu-vor-aktuellen-strategischen-herausforderungen) | Bericht vom 24. Juni 2026 zu einem externen Schweizer KMU-Barometer | Verunsicherung, Lieferketten und bürokratischen Aufwand als mögliche Themen berücksichtigen. Keine individuellen Prognosen aus einem Durchschnitt ableiten. |
 
-## Internes Material: getrennt halten
+## Interne Inputs – nicht im öffentlichen Projekt
 
-Die interne Workshoppräsentation «Mobiliar Forum Workshop – KMU Zukunftsindex», erstellt für ein Gespräch mit Sotomo vom 10. Juni 2026, gab zusätzliche Gesprächshypothesen: Zeit- und Ressourcendruck, Schlüsselpersonen und Nachfolge, Führung und Zusammenarbeit, Marktunsicherheit, KI und Chancen. Dabei handelt es sich um **eine kleine interne Einschätzung von Mobiliar-Beteiligten über KMU**, nicht um eine repräsentative Befragung von KMU selbst. Die Präsentation, ihre Zitate und internen Details werden **nicht** im öffentlichen Repository veröffentlicht. Sie bilden lediglich einen nicht vertraulich ausformulierten Themenanlass; die sichtbare Demo verwendet eigenständige fiktive Fallbeispiele und allgemein bekannte Fragestellungen.
+Zusätzlich flossen bereits diskutierte, allgemein formulierte KMU-Themen in die Produktannahmen ein. Sie sind weder eine repräsentative KMU-Befragung noch ein Ersatz für echte Gespräche mit Unternehmen. Originalzitate, Namen von Gesprächspartnern, Sitzungsdaten und interne Unterlagen werden in diesem öffentlichen Repository bewusst nicht veröffentlicht.
 
 ## Unsere Produktentscheidungen (Hypothesen, keine Studienresultate)
 
