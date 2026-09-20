@@ -1,47 +1,42 @@
-# KMU Buddy · Schweizer KMU als Ausgangspunkt
+# KMU Buddy – Forschungs- und Testgrundlage Schweiz
+Stand: 20. September 2026 · ausschliesslich öffentlich zugängliche Quellen im Repository.
 
-Stand: 20. September 2026. **Öffentliche Forschung und Produktannahmen**, keine interne Sotomo Präsentation. Die fiktiven Testbetriebe sind Konstruktionen, keine befragten KMU.
+## Quellen und ihre Aussagegrenzen
 
-## Was die öffentlich zugänglichen Quellen sagen
+| Quelle | Welche Bevölkerung / welches Jahr? | Was sie für den kostenlosen Konzeptprototypen anregt |
+|---|---|---|
+| [KMU-Portal des Bundes / STATENT](https://www.kmu.admin.ch/de/kmu-in-zahlen-firmen-und-beschaeftigte) | Marktwirtschaftliche Unternehmen in der Schweiz; die auf der Website dargestellte Grössenstruktur verwendet BFS-Daten 2023 | Der Buddy muss für Kleinstunternehmen mit sehr wenig Personal funktionieren und darf keine Workshopgruppe voraussetzen. |
+| [ZHAW / ZKB KMU ZH Monitor 2026](https://www.zkb.ch/de/unternehmen/kmu-wissen/initiativen-und-studien/kmu-zh-monitor/kmu-zh-monitor-2026.html) | 1’287 befragte Unternehmen im **Kanton Zürich**, 9. März bis 9. April 2026; nicht automatisch repräsentativ für die ganze Schweiz | Neben Digitalisierung/KI auch Akquise, schwache Nachfrage, Vorschriften, Branchenunterschiede und unter Druck stehende Margen berücksichtigen. |
+| [KMU ZH Monitor – Vertiefung KI](https://www.zkb.ch/de/unternehmen/kmu-wissen/initiativen-und-studien/kmu-zh-monitor/kmu-zh-monitor-2026/ki-vertiefung.html) | Dieselbe Zürcher Untersuchung 2026 | Bei KI erst nach einem konkreten Anwendungsfall fragen; fehlendes Know-how und praktische Beispiele ernst nehmen. Nicht jedes KMU zu einem KI-Test drängen. |
+| [AXA / Sotomo KMU Arbeitsmarktstudie – Personalausfälle](https://www.axa.ch/de/ueber-axa/medien/medienmitteilungen/aktuelle-medienmitteilungen/2026/20260820-kmu-arbeitsmarktstudie-2026-personalausfaelle.html) | 336 KMU der Deutsch- und Westschweiz, Erhebung 11.–18. März 2026; die Studie umfasst nicht jeden Einpersonenbetrieb | Ausfall von Schlüsselpersonen, Belastung und fehlende Zeit für Prävention als Gesprächshypothesen berücksichtigen. Keine medizinischen Diagnosen. |
+| [AXA / Sotomo KMU Arbeitsmarktstudie – KI](https://www.axa.ch/de/ueber-axa/medien/medienmitteilungen/aktuelle-medienmitteilungen/2026/20260915-kmu-arbeitsmarktstudie-kuenstliche-intelligenz.html) | Dieselbe Stichprobe, Veröffentlichung September 2026 | Unterschiedliche KI-Erfahrungen zulassen: von bereits im Alltag eingesetzter Technologie bis zu bewusster Nichtnutzung. |
+| [KMU-Portal des Bundes – Nachfolgeregelungen](https://www.kmu.admin.ch/de/kmu-in-zahlen-nachfolgeregelungen) | Übersicht über Erhebungen mit verschiedenen Jahren und Unternehmensgrössen | Nachfolge und Wissenstransfer als eigenes Anliegen behandeln; eine kurze Methode zur Wissensübergabe ist **keine** vollständige Nachfolgeberatung. |
+| [KMU-Portal des Bundes – strategische Herausforderungen](https://www.kmu.admin.ch/de/kmu-vor-aktuellen-strategischen-herausforderungen) | Bericht vom 24. Juni 2026 zu einem externen Schweizer KMU-Barometer | Verunsicherung, Lieferketten und bürokratischen Aufwand als mögliche Themen berücksichtigen. Keine individuellen Prognosen aus einem Durchschnitt ableiten. |
 
-1. **Kleine Betriebe sind kein Randsegment.** Eine Zusammenstellung der Universität St. Gallen mit BFS Daten für 2023 weist 561’952 Mikrounternehmen mit weniger als zehn Mitarbeitenden aus, 89,8 % aller Unternehmen in der dargestellten Grundgesamtheit. Die 2026 veröffentlichte Zusammenstellung verwendet Daten des BFS aus 2023. Quelle: https://kmu.unisg.ch/fileadmin/user_upload/HSG_ROOT/Institut_KMU/Forschung/KMU_in_Zahlen/2026_OBT_KMU_in_Zahlen/2026_KMU_in_Zahlen_OBT_KMU_Studie_2026.pdf
+## Internes Material: getrennt halten
 
-2. **Nicht alle haben dasselbe Problem.** Der ZHAW / ZKB «KMU ZH Monitor 2026» (Befragung von 1’287 Unternehmen im Kanton Zürich, März bis April 2026) nennt Vorschriften, Digitalisierung/KI und Kundenakquise als wichtige Herausforderungen. Für Kleinstunternehmen ist Digitalisierung/KI deutlich wichtiger geworden. Diese Zürcher Umfrage ist **keine repräsentative Schweiz Aussage**. Quelle: https://www.zkb.ch/de/unternehmen/kmu-wissen/initiativen-und-studien/kmu-zh-monitor/kmu-zh-monitor-2026.html
+Die interne Workshoppräsentation «Mobiliar Forum Workshop – KMU Zukunftsindex», erstellt für ein Gespräch mit Sotomo vom 10. Juni 2026, gab zusätzliche Gesprächshypothesen: Zeit- und Ressourcendruck, Schlüsselpersonen und Nachfolge, Führung und Zusammenarbeit, Marktunsicherheit, KI und Chancen. Dabei handelt es sich um **eine kleine interne Einschätzung von Mobiliar-Beteiligten über KMU**, nicht um eine repräsentative Befragung von KMU selbst. Die Präsentation, ihre Zitate und internen Details werden **nicht** im öffentlichen Repository veröffentlicht. Sie bilden lediglich einen nicht vertraulich ausformulierten Themenanlass; die sichtbare Demo verwendet eigenständige fiktive Fallbeispiele und allgemein bekannte Fragestellungen.
 
-3. **Menschen fehlen oder fallen aus, aber die Gruppe ist heterogen.** Die AXA KMU Arbeitsmarktstudie 2026 wurde von Sotomo anhand 336 KMU mit mindestens fünf Beschäftigten in der deutsch- und französischsprachigen Schweiz durchgeführt. Personalausfälle und psychische Belastungen werden behandelt. Die Studie deckt **Einpersonenbetriebe und Unternehmen mit zwei bis vier Beschäftigten nicht ab**. Quelle: https://www.axa.ch/de/ueber-axa/medien/medienmitteilungen/aktuelle-medienmitteilungen/2026/20260820-kmu-arbeitsmarktstudie-2026-personalausfaelle.html
+## Unsere Produktentscheidungen (Hypothesen, keine Studienresultate)
 
-4. **KI ist auch für kleine Unternehmen ein Thema, nicht automatisch der richtige erste Schritt.** Die AXA/Sotomo Auswertung 2026 zeigt Unterschiede nach KMU Grösse beim wahrgenommenen Nutzen von KI. Die Befragungsgrundlage ist dieselbe wie unter Punkt 3. Quelle: https://www.axa.ch/de/ueber-axa/medien/medienmitteilungen/aktuelle-medienmitteilungen/2026/20260915-kmu-arbeitsmarktstudie-kuenstliche-intelligenz.html
+1. **Alltag vor Kategorie:** Wer mag, erzählt zuerst frei. Vorgegebene Themen sind nur eine Hilfe.
+2. **Konkret nachfragen:** Ein einzelner Fall («Wo geht die Information verloren?») statt eines generischen Assessments.
+3. **Kleines Team, kleiner Versuch:** Eine Inhaberin mit ein bis vier Beschäftigten braucht keine Übung für 20 Personen. Ein Einpersonenbetrieb bekommt keinen Delegationsauftrag.
+4. **Mehr als Innovation:** Schwindende Nachfrage, steigende Einkaufskosten, Bürokratie, Personalausfälle oder ungeklärte Nachfolge sind legitime Ausgangspunkte. Nicht reflexartig KI, Workshops oder Versicherungen empfehlen.
+5. **Unwissen ehrlich markieren:** Wenn der Prototyp einen freien Text nicht einordnen kann, fragt er nach einem letzten konkreten Beispiel statt eine Situation zu erfinden.
+6. **Rechts- und Finanzfragen begrenzen:** Keine verbindliche Regulierungsauskunft oder individuelle Finanzentscheidung aus diesem regelbasierten Prototypen. Bei Fristen an zuständige Stellen verweisen.
+7. **Ein erster Impuls vor dem Katalog:** Empfehlung zeigt den nächsten Versuch und weshalb er zum Anliegen passt. Weiterführende Karten, Medien und Begegnungen bleiben freiwillig.
+8. **Keine vorgetäuschte KI:** Freitext-Erkennung ist ein bewusst einfacher, transparenter Regelmechanismus ohne API-Aufrufe, Nutzungsgebühren oder Server. Das «Versteht mich»-Gefühl muss mit tatsächlichen KMU geprüft werden.
 
-5. **Nachfolge und Weitergabe von Wissen sind eigenständige Situationen.** Das KMU Portal des Bundes verweist auf Erhebungen zur ungeklärten Nachfolge. Die dort referenzierten Studien haben unterschiedliche Jahrgänge und Unternehmensgrössen; Zahlen daraus sind nicht direkt auf die aktuelle Nutzergruppe übertragbar. Quelle: https://www.kmu.admin.ch/de/kmu-in-zahlen-nachfolgeregelungen
+## Fiktive Testfälle
 
-## Was wir für das Produkt daraus ableiten (Hypothesen, keine Studienergebnisse)
+- Bäckerei, 4 Personen: Inhaberin als Engpass, aber je nach Antwort unterschiedliche Ursachen (Offerte, Entscheid, Tagesplanung).
+- Quartierladen, 3 Personen: Schwächere Kundennachfrage; andere Empfehlung als bei einer vollen Auftragslage mit knapper Marge.
+- Coiffeursalon, 6 Personen: Mitarbeitende gewinnen, halten oder entlasten sind drei verschiedene Fragen.
+- Schreinerei, 8 Personen: Erfahrung geht mit einer Pensionierung verloren; Methodenkarte unterstützt einen ersten Wissenstransfer.
+- Café, 3 Personen: Material- und Einkaufskosten – zunächst einen konkreten Fall vergleichen.
+- Velowerkstatt, 2 Personen: Auflage unklar – Frage und Frist erfassen, dann offizielle Stelle/Fachperson kontaktieren.
+- Einpersonenbetrieb: Keine Teamübung, keine Delegation an erfundene Mitarbeitende.
+- Nicht erkannter Freitext: Keinen unzutreffenden Status («Bei euch läuft vieles gut») unterstellen.
 
-- Die erste Frage lautet **«Was ist bei euch konkret los?»**, nicht «Zu welcher Branche gehört ihr?».
-- Der Buddy spiegelt die konkrete Situation und fragt gezielt nach, statt eine Kategorie als Diagnose auszugeben.
-- Ein Impuls muss für **ein oder zwei Menschen genauso möglich** sein wie für ein Team. Methoden mit höherem Personenbedarf werden nicht als unmittelbare Empfehlung ausgegeben.
-- Eine Antwort zu Kundennachfrage darf nicht automatisch ein Personalgespräch auslösen. Eine Antwort zu Personalausfall darf nicht ungefragt einen KI Kurs ausspielen.
-- Bei Digitalisierung wird zunächst ein fiktiver, datensparsamer Versuch vorgeschlagen, keine ungeprüfte Weitergabe von Firmen- oder Kundendaten.
-- Eigene Angebote, bestehende Medien und externe Förderung erscheinen **nur bei Passung und mit ehrlicher Herkunftskennzeichnung**.
-- Die öffentliche Konzeptdemo verwendet erkennbare Regeln und vier fiktive Situationen; daraus kann kein Beleg für eine echte KI Gesprächsqualität abgeleitet werden.
-
-## Vier Testfälle mit bewusst verschiedenen nächsten Schritten
-
-| Fiktives KMU | Anlass | Kontextfrage | Passender kleiner Versuch |
-|---|---|---|---|
-| Bäckerei, 4 Personen | Alle Entscheide landen bei der Inhaberin | Welche Entscheidung bleibt liegen? | Eine wiederkehrende Entscheidung mit klaren Grenzen abgeben |
-| Metallbau, 12 Personen | Werkstatt und Montage müssen nachtelefonieren | Wo geht die Information verloren? | Einen echten Auftrag mit drei Angaben übergeben |
-| Coiffeursalon, 6 Personen | Mitarbeitende gehen oder fehlen | Was beschäftigt dich beim Personal konkret? | Ein offenes Gespräch und eine kleine Verbesserung vereinbaren |
-| Schreinerei, 8 Personen | Eine erfahrene Person geht in Pension | Welches Wissen wäre schwer zu ersetzen? | Einen Kniff zu zweit vorzeigen, notieren und ausprobieren |
-
-Diese Fälle sind **Regressionstests**, keine Interviews und keine Nutzungsstudie. Die zugehörigen automatischen Browserprüfungen stehen in `tests/personas.mjs`.
-
-## Prüffragen für reale KMU Tests
-
-1. Erkennt die Person in eigenen Worten das konkrete Anliegen im Dashboard wieder?
-2. Ist der erste Impuls ohne Vorbereitung, grosse Zusatzkosten oder lange Sitzung machbar?
-3. Passen die Methodenkarten zu Zeit und Anzahl tatsächlich verfügbarer Menschen?
-4. Erscheinen Medien und weitere Angebote als persönliche Einladung statt als Katalog oder Werbung?
-5. Ist unmissverständlich klar, was heute vorhanden ist und was erst eine Idee für eine spätere Pilotierung ist?
-6. Würde die Person freiwillig zurückkommen, um zu erzählen, was sie ausprobiert hat?
-
-**Vertraulichkeit:** Interne Forschungsunterlagen, reale Gesprächsnotizen und nicht freigegebene Mobiliar Materialien gehören nicht in dieses öffentliche Repository.
+Die Personas sind **synthetische Regressionstests**, keine reale Nutzungsstudie. In einer späteren Beobachtung mit KMU fragen wir: Wird die Situation in den eigenen Worten wiedererkannt? Stellt die Rückfrage einen neuen Blickwinkel her? Ist der Versuch morgen wirklich machbar? Hat eine Methodenkarte die korrekte Gruppengrösse? Was ist überraschend hilfreich und was geht daneben?
