@@ -7,7 +7,7 @@ const appUrl=pathToFileURL(resolve('index.html')).href;
 mkdirSync('test-artifacts',{recursive:true});
 const examples=[
  {id:'baeckerei',label:'Bäckerei, 4 Personen, Inhaberin als Engpass',story:'Ich führe eine Bäckerei mit vier Leuten. Alles läuft über meinen Tisch und ich komme zu nichts mehr.',question:'Wenn du zwei Tage weg wärst',title:'Eine Entscheidung weniger auf deinem Tisch.',action:'Gib eine kleine, wiederkehrende Entscheidung frei.',choice:'1',method:'Ideenskizze',size:'2'},
- {id:'metallbau',label:'Metallbau, 12 Personen, Übergaben',story:'Wir sind 12 Personen im Metallbau. Bei Übergaben zwischen Büro und Werkstatt geht oft etwas verloren.',question:'Wo geht die Information',title:'Damit die Montage ohne Rückruf starten kann.',action:'Macht drei Fragen vor der nächsten Montage.',choice:'1',method:'Zentrale Herausforderung definieren',size:'10'},
+ {id:'metallbau',label:'Metallbau, 12 Personen, Übergaben',story:'Wir sind 12 Personen im Metallbau. Bei Übergaben zwischen Büro und Werkstatt geht oft etwas verloren.',question:'Wo geht die Information',title:'Damit die Montage ohne Rückruf starten kann.',action:'Macht drei Fragen vor der nächsten Montage.',choice:'1',method:'Aktionspunkte',size:'10'},
  {id:'coiffeur',label:'Coiffeursalon, 6 Personen, Fachkräfte',story:'Wir sind ein Coiffeursalon mit sechs Leuten. Wir haben Mühe, gute Mitarbeitende zu halten und neue Fachkräfte zu finden.',question:'Was beschäftigt dich beim Thema Mitarbeitende',title:'Warum gute Leute bleiben, ist eine gute Frage.',action:'Frag eine Person, was ihren Alltag bei euch besser macht.',choice:'1',method:'Empathie-Gespräch',size:'5'},
  {id:'schreinerei',label:'Schreinerei, 8 Personen, Nachfolge und Wissen',story:'Unsere Schreinerei hat acht Leute. Unser langjähriger Schreiner geht bald in Pension. Sein Wissen ist nirgends festgehalten.',question:'Welches Wissen wäre morgen',title:'Lasst den wichtigsten Kniff einmal vorzeigen.',action:'Sichert diese Woche einen einzigen Arbeitskniff.',choice:'1',method:'Beobachten',size:'5'},
 ];
@@ -143,7 +143,7 @@ try{
  await homepageMedia.screenshot({path:'test-artifacts/mobile-home-entry.png',fullPage:true});
  const homeLinks=homepageMedia.locator('.home-media-grid a[href^="https://"]');
  assert.equal(await homeLinks.count(),2,'Homepage: podcast and videopodcast links missing');
- assert.ok((await homeLinks.nth(0).getAttribute('href')).includes('podcasts.apple.com'),'Podcast not real');
+ assert.ok((await homeLinks.nth(0).getAttribute('href')).includes('srf.ch/audio/input/'),'Podcast not linked to direct SRF episode');
  assert.ok((await homeLinks.nth(1).getAttribute('href')).includes('srf.ch/play/tv/'),'Video not real');
  await homepageMedia.close();
  const desktopHome=await browser.newPage({viewport:{width:1440,height:900}});
@@ -200,5 +200,52 @@ try{
  assert.ok(!(await unknown.locator('.dash-hero').innerText()).includes('Bei euch läuft vieles gut'),'Unrecognized problem must not be called fine');
  findings.push({persona:'Nicht erkannter Freitext',result:'OK'});
  await unknown.close();
+
+ // Seven real working guides instead of click-through method summaries; the interview is tailored to the customer's issue.
+ const workshop=await browser.newPage({viewport:{width:390,height:844}});
+ const workshopErrors=[];workshop.on('pageerror',e=>workshopErrors.push(e.message));
+ await workshop.goto(appUrl);
+ await workshop.locator('#hero-story').fill('Im Quartierladen kommen weniger Stammkundinnen und Stammkunden als früher.');
+ await workshop.locator('#hero-goal').fill('Verstehen, weshalb die Leute seltener einkaufen');
+ await workshop.locator('#hero-size').selectOption('2');
+ await workshop.locator('#hero-form button[type="submit"]').click();
+ await workshop.locator('[data-choice="1"]').click();
+ await workshop.locator('[data-action="next"]').click();
+ await workshop.locator('.dash-tabs [data-tab="methods"]').click();
+ assert.ok((await workshop.locator('.library-head').textContent()).includes('Sieben ausgearbeitete Methoden'),'No extended method overview');
+ await workshop.locator('[data-method="empathie"]').first().click();
+ const dialog=workshop.locator('.method-workshop');
+ assert.ok(await dialog.isVisible(),'Interview worksheet did not open');
+ assert.ok((await dialog.innerText()).includes('Quartierladen'),'The method must include the entered KMU situation');
+ assert.ok((await dialog.innerText()).includes('Stammkund'),'Interview questions must be tailored to demand context');
+ assert.equal(await dialog.locator('.guide-questions li').count(),6,'Not six themed interview questions');
+ await dialog.screenshot({path:'test-artifacts/interview-method-guide.png'});
+ assert.ok((await dialog.innerText()).includes('So könntest du die Person anfragen'),'Concrete contact invitation missing');
+ assert.ok((await dialog.innerText()).includes('AUSWERTEN'),'Practical analysis missing');
+ assert.equal(await dialog.locator('textarea[data-method-note]').count(),3,'Notepad does not contain all three reflection questions');
+ await dialog.locator('[data-method-note="empathie"][data-note-key="beobachtung"]').fill('Ein konkreter Einkauf war umständlich.');
+ await dialog.locator('[data-action="close"]').first().click();
+ await workshop.locator('[data-method="empathie"]').first().click();
+ assert.ok((await workshop.locator('[data-method-note="empathie"][data-note-key="beobachtung"]').inputValue()).includes('umständlich'),'Notes lost on modal close');
+ await workshop.locator('.method-workshop [data-action="close"]').first().click();
+ const fullGuides=['empathie','beobachten','fragen','annahmen','skizze','aktion','testen'];
+ const details=workshop.locator('.method-all').first();
+ for(const id of fullGuides){
+  if(!(await details.evaluate(el=>el.open)))await details.locator('summary').click();
+  const card=workshop.locator('[data-method="'+id+'"]:visible').first();
+  assert.ok(await card.count()>=1,'Full method card missing '+id);
+  await card.click();
+  assert.ok(await workshop.locator('.method-workshop .guide-notes').isVisible(),'Worksheet missing '+id);
+  assert.ok((await workshop.locator('.method-workshop').innerText()).includes('VORBEREITEN'),'Preparation missing '+id);
+  assert.ok((await workshop.locator('.method-workshop').innerText()).includes('AUSWERTEN'),'Evaluation missing '+id);
+  assert.ok(await workshop.locator('[data-method-copy="report"]').isVisible(),'Takeaway is not copyable '+id);
+  await workshop.locator('.method-workshop [data-action="close"]').first().click();
+ }
+ assert.equal(workshopErrors.length,0,'Method guides raised client errors');
+ const allLinks=await workshop.locator('a[href^="http"]').evaluateAll(nodes=>nodes.map(n=>n.href));
+ assert.ok(allLinks.every(u=>!u.includes('zkb.ch')&&!u.includes('podcasts.apple.com')),'Competing financial provider or indirect podcast link remains');
+ await workshop.screenshot({path:'test-artifacts/methods-overview.png',fullPage:true});
+ findings.push({persona:'MVP1 · 7 Praxisguides mit themenbezogenem Interview',result:'OK',questionCount:6,notes:'local'});
+ await workshop.close();
  console.log(JSON.stringify({result:'PASS',tested:findings.length,findings},null,2));
 }finally{await browser.close();}
