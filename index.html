@@ -269,6 +269,44 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{
 .mvp-more-grid button{border:0;background:transparent;color:#285447;font-weight:750;font-size:13px;text-decoration:underline;text-underline-offset:4px;padding:8px 11px 8px 0;min-height:40px}
 .mvp-more>.microline{padding:0 21px 15px;font-size:11px}
 @media(max-width:700px){.mvp-more-grid{grid-template-columns:1fr}.mvp-more-grid article{border-right:0;border-bottom:1px solid #E0E5DC;padding:18px}.mvp-more-grid article:last-child{border-bottom:0}}
+
+/* MVP-1 Methodenwerkstatt: keine dekorative Kartenoptik, sondern ein nutzbares Arbeitsblatt. */
+.method-card-full{background:#FFFEFB;border:1px solid #D5DFD5;border-left:3px solid #366955}
+.method-card-full .method-stamp{background:#E4EDE4;border-radius:5px;color:#2D6652}
+.method-card-full .method-kind{color:#386858}
+.method-card-full .method-open{font-weight:800}
+.method-workshop{width:min(890px,calc(100vw - 28px));max-width:890px;max-height:calc(100dvh - 28px);overflow-y:auto;overscroll-behavior:contain;background:#FFFEFA;border:1px solid #E0E4DB;border-radius:7px;padding:clamp(20px,3.5vw,39px);box-shadow:0 22px 80px #152B2633}
+.method-workshop h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(31px,4vw,45px);line-height:1.13;letter-spacing:-.04em;margin:11px 0 12px}
+.method-workshop .guide-lead{font-size:17px;line-height:1.5;color:#416150;margin:0 0 22px}
+.method-workshop .mvp-kicker{margin-top:15px}
+.guide-topic{background:#E9F0E8;border-left:3px solid #2E6A57;padding:17px 20px;margin:15px 0 16px}
+.guide-topic>span,.guide-part-title>span{display:block;color:#456D5C;font-size:11px;font-weight:850;letter-spacing:.1em;line-height:1.5}
+.guide-topic>p{font:400 19px/1.4 Georgia,serif;color:#254C3C;margin:6px 0 0;overflow-wrap:anywhere}
+.guide-topic>p.guide-goal{font:500 12px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin-top:9px;color:#456457}
+.guide-meta{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 24px}
+.guide-meta span{font-size:11px;color:#456051;background:#F2F2EA;border:1px solid #E1E3D9;border-radius:4px;padding:6px 9px}
+.guide-part{border-top:1px solid #DEE3D9;padding:24px 0 12px}
+.guide-part ol,.guide-questions{list-style:none;counter-reset:methodSteps;padding:0;margin:14px 0}
+.guide-part li,.guide-questions li{counter-increment:methodSteps;position:relative;padding:0 0 15px 34px;margin:0;color:#36483E;font-size:14px;line-height:1.62;min-height:29px}
+.guide-part li:before,.guide-questions li:before{content:counter(methodSteps,decimal-leading-zero);position:absolute;top:0;left:0;color:#658C76;font-size:12px;font-weight:850}
+.guide-interview{background:#F6F3EB;border:1px solid #E6E3D9;padding:22px 24px;margin:15px 0 24px;border-radius:5px}
+.guide-interview>p{font-size:14px;line-height:1.5;color:#445A4C}
+.guide-interview h3{font:400 24px/1.2 Georgia,serif;margin:24px 0 10px}
+.guide-sample{background:#FFFEFB;border:1px solid #E5E0D4;border-radius:5px;padding:17px 19px;color:#31483B;font-size:14px;line-height:1.62;overflow-wrap:anywhere}
+.guide-interview .guide-questions{counter-reset:methodSteps}
+.guide-tip{border-left:3px solid #B9CCBA;padding-left:13px;color:#526659!important}
+.guide-copy{border:1px solid #BED0C1;border-radius:5px;background:#FFFEFA;color:#285B49;font-size:13px;font-weight:760;line-height:1.35;padding:10px 15px;min-height:42px;text-align:left;margin:9px 9px 10px 0}
+.guide-copy:hover{background:#E5EEE5}
+.guide-notes{border-top:1px solid #DEE3D9;background:#F7F8F3;padding:22px 24px;margin:21px 0}
+.guide-note{display:block;margin:18px 0}
+.guide-note>span{display:block;font-size:13px;font-weight:770;color:#315442;margin-bottom:7px}
+.guide-note textarea{display:block;width:100%;resize:vertical;min-height:76px;border-radius:4px;border:1px solid #C9D4C9;background:#FFFEFB;color:#25392D;padding:12px;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.guide-note textarea:focus{outline:2px solid #7AA48D;outline-offset:2px}
+.guide-copy-status{color:#2D6A55;font-weight:650;font-size:12px;min-height:18px;margin:0}
+.guide-attribution{border-top:1px solid #DEE3D9;padding-top:15px;color:#64756A;font-size:11px;line-height:1.55}
+.method-workshop>.primary{border-radius:5px;box-shadow:none;margin-top:8px}
+@media(max-width:700px){.method-workshop{width:calc(100vw - 14px);max-height:calc(100dvh - 14px);border-radius:5px;padding:20px 16px}.guide-interview{padding:16px 14px}.guide-notes{padding:18px 14px}.guide-part{padding:19px 0 8px}.guide-part li,.guide-questions li{padding-left:30px}.method-workshop h2{font-size:34px}.guide-meta span{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.method-workshop{scroll-behavior:auto}}
 </style>
 </head>
 <body>
