@@ -37,7 +37,9 @@ try{
   const resultDetails=page.locator('.mvp-result-details');
   assert.equal(await resultDetails.evaluate(el=>el.open),false,p.id+': lange Einordnung muss zunächst geschlossen sein');
   await resultDetails.locator('summary').click();
-  assert.ok((await resultDetails.innerText()).includes('Was ich bei euch höre'),p.id+': vertiefte Einordnung fehlt');
+  const heardHeading=resultDetails.getByRole('heading',{name:'Was ich bei euch höre'});
+  await heardHeading.waitFor();
+  assert.ok(await heardHeading.isVisible(),p.id+': vertiefte Einordnung fehlt');
   assert.ok((await page.locator('.feature.action').innerText()).includes(p.action),p.id+': Impuls nicht passend');
   assert.ok((await page.locator('.method-strip').innerText()).includes(p.method),p.id+': Methodenkarte nicht passend');
   const directLinks=page.locator('.dashboard-media-shelf a[href^="https://"]');
