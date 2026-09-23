@@ -37,6 +37,12 @@ assert.equal(api.model().title,'Auch die Rolle danach gehört zur Nachfolge.');
 assert.equal(api.model().start,'Sprecht über die Zeit nach der Übergabe.');
 assert.ok(api.resultHighlights().some(text=>text.includes('Führung, Verantwortung und Eigentum')),'Unternehmensnachfolge bleibt zu eng');
 
+Object.assign(api.state,{persona:'ebike',topic:'customers',detail:'2',details:['1','0','2'],answerText:'Ob E-Bikes zu uns passen · Ob Kundschaft danach fragt · Was wir aufbauen müssten',size:'5',secondaryTopics:['pressure'],story:'Wir sind auf Rennvelos spezialisiert und überlegen uns E-Bikes.'});
+const multiHighlights=api.resultHighlights();
+assert.ok(multiHighlights[0].includes('Was wir dafür können und aufbauen müssten'),'Bewusst gewählter Fokus wird nicht priorisiert');
+assert.ok(multiHighlights.some(text=>text.includes('Weitere markierte Fragen')),'Weitere markierte Fragen gehen verloren');
+assert.ok(multiHighlights.some(text=>text.includes('Zeit & Entscheidungen')),'Zusätzliches Thema geht im kompakten Ergebnis verloren');
+
 for(const persona of ['owner','knowledge','succession']){
  Object.assign(api.state,{persona,topic:api.SITUATIONS[persona].topic,detail:'',details:[],answerText:'',size:'10',secondaryTopics:[]});
  const count=api.resultHighlights().length;
