@@ -72,6 +72,7 @@ try{
   const beforeTitle=(await page.locator('.dash-hero h1').innerText()).trim();
   const beforeAction=(await page.locator('.feature.action h2').innerText()).trim();
   await page.locator('[data-action="refine"]').click();
+  await page.locator('[data-choice="0"]').click(); // Deselection now needed: multiple answers can coexist.
   await page.locator('[data-choice="1"]').click();
   await page.locator('[data-action="next"]').click();
   await page.locator('[data-action="next"]').click();
@@ -278,14 +279,33 @@ try{
  await ebike.goto(appUrl);
  await ebike.locator('#hero-story').fill('Wir sind ein Team von fünf Fahrradmechaniker:innen und auf Rennvelos spezialisiert. Sollen wir auch auf den E-Bike-Zug aufspringen?');
  await ebike.locator('#hero-form button[type="submit"]').click();
- assert.ok(await ebike.getByRole('heading',{name:/E-Bike-Frage/}).isVisible(),'E-Bike case not recognized');
+ assert.ok(await ebike.getByRole('heading',{name:/Welche Fragen rund um E-Bikes/}).isVisible(),'E-Bike case not recognized');
  await ebike.locator('.theme-adjust summary').click();
  await ebike.locator('[data-secondary="pressure"]').click();
  assert.equal(await ebike.locator('[data-secondary="pressure"]').getAttribute('aria-pressed'),'true','Additional concern not retained');
  await ebike.locator('[data-choice="1"]').click();
+ await ebike.locator('[data-choice="0"]').click();
+ await ebike.locator('[data-choice="2"]').click();
+ assert.equal(await ebike.locator('.answer.selected').count(),3,'Three concrete aspects must remain selected');
+ assert.equal(await ebike.locator('[data-detail-focus="1"]').getAttribute('aria-pressed'),'true','First selected answer should be the initial focus');
+ await ebike.locator('[data-detail-focus="2"]').click();
+ assert.equal(await ebike.locator('[data-detail-focus="2"]').getAttribute('aria-pressed'),'true','Focus must be adjustable without losing other aspects');
+ assert.equal(await ebike.locator('.answer.selected').count(),3,'Changing focus must not drop aspects');
  await ebike.locator('[data-action="next"]').click();
+
  assert.ok((await ebike.locator('.feature.action').innerText()).includes('E-Bike-Anfragen'),'E-Bike-specific action missing');
  const bikePerspective=await ebike.locator('.mvp-perspective').innerText();
+ for(const aspect of ['Ob unsere Kundschaft danach fragt','Ob E-Bikes zu unserer Rennvelo-Spezialisierung passen','Was wir dafür können und aufbauen müssten']){
+  assert.ok(bikePerspective.includes(aspect),'Selected aspect dropped from personal perspective: '+aspect);
+ }
+ assert.ok(bikePerspective.includes('Erster Fokus:')&&bikePerspective.includes('Was wir dafür können und aufbauen müssten'),'Chosen primary aspect not reflected');
+ await ebike.locator('[data-action="refine"]').click();
+ assert.equal(await ebike.locator('.answer.selected').count(),3,'Answers lost when going back to correct');
+ await ebike.locator('[data-choice="0"]').click();
+ assert.equal(await ebike.locator('.answer.selected').count(),2,'Tapping an answer again must deselect just that answer');
+ await ebike.locator('[data-action="next"]').click();
+ assert.ok(!(await ebike.locator('.mvp-perspective').innerText()).includes('Ob unsere Kundschaft danach fragt ·'),'Deselected aspect should disappear from result');
+
  for(const expected of ['Was ich bei euch höre','Was zusätzlich hineinspielt','Worin die Spannung','Eine mögliche Richtung','Was ihr dabei herausfinden könnt','Rennvelos','E-Bikes','Zeit & Entscheidungen']) assert.ok(bikePerspective.toLowerCase().includes(expected.toLowerCase()),'Missing meaningful bike perspective: '+expected+'; found='+bikePerspective.slice(0,600));
  assert.ok(!bikePerspective.includes('Wähle einen konkreten Moment aus deinem Alltag.'),'Wrong generic exercise');
  await ebike.screenshot({path:'test-artifacts/ebike-perspektive-mobile.png',fullPage:true});
