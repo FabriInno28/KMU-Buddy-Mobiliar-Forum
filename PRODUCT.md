@@ -24,6 +24,14 @@ Der Buddy soll zum eigenen Erzählen einladen und Lust auf Zukunft machen. Die e
 6. Vernetzen: externe Fachleute, Innovationsförderer und regionale oder nationale Programme. Keine Förderberechtigung ohne geprüfte Voraussetzungen behaupten.
 7. Lernen: mit Zustimmung prüfen, ob der Impuls zu einer Handlung geführt hat. Keine versteckte Leistungsmessung und kein Lead Zwang.
 
+## Prototyp 1 · Mehrere Anliegen und begründete Perspektive
+
+- Ein KMU darf **mehrere Themen gleichzeitig** wählen; die Person bestimmt selbst, womit sie **zuerst** anfangen möchte. Zusätzliche Anliegen bleiben in der Ergebnisansicht sichtbar und können nachträglich ergänzt werden.
+- Der Buddy bietet bei einer freien Schilderung eine **vorsichtige, regelbasierte** Einordnung. Das ist keine semantische KI-Analyse; bei unklaren Eingaben und reiner Themenauswahl benennt er explizit, was er nicht weiss.
+- Die Perspektive im Ergebnis unterscheidet: **Was wir hören; was zusätzlich hineinspielt; mögliche Spannung; mögliche Richtung; weshalb genau dieser Versuch; was sich dadurch herausfinden lässt.** Das sind angebotene Lesarten, keine Diagnosen.
+- Ein ausführlicher Beispielpfad für eine Rennvelo-Werkstatt mit E-Bike-Frage zeigt, wie aus einem grossen Strategieentscheid zunächst ein passender kleiner **Nachfrage-Test** wird, ohne die Investitions- oder Sicherheitsfrage vorwegzunehmen.
+- Medien bleiben **nur bei konkreter Passung** empfohlen. Ein zusätzlich markiertes Thema allein darf noch keinen beliebigen Podcast auslösen. Eigene Auswahl und Korrekturen gehen vor automatischer Verschlagwortung.
+
 ## Abnahmekriterien für die nächste Version
 
 - Freier Text steuert das weitere Gespräch nachweislich sinnvoll; bis dahin klar als regelbasierte Demo kennzeichnen.
