@@ -23,6 +23,8 @@ Verschiedene sehr kleine Unternehmen einladen, beispielsweise Einpersonenbetrieb
 
 Die Testleitung notiert Beobachtungen **ausserhalb** dieser öffentlichen Webseite, ohne Namen/Identifikatoren und ohne vertrauliche Zitate. Nur mit Einwilligung gegebenenfalls anonymisierte O-Töne verwenden. Ein separater freiwilliger Beobachtungsbogen reicht aus; keine Analytics oder Cookies für MVP 1 einbauen.
 
+Für die nahe beieinanderliegenden Fälle Inhaberengpass, Wissenstransfer und Unternehmensnachfolge zusätzlich prüfen: Stellen alle drei Pfade eine andere klärende Frage? Unterscheiden sich Headline, drei bis fünf Highlights und nächster Schritt sichtbar? Wird Wissenstransfer nicht als vollständige Nachfolgeberatung dargestellt?
+
 ## Abnahmekriterien für eine erste Feldtest-Runde
 
 | Kriterium | Beobachtbarer Prüfpunkt | Vorgehen bei Problem |

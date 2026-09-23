@@ -11,7 +11,9 @@ jobs:
         with:
           node-version: '22'
       - name: HTML und JavaScript prüfen
-        run: node tests/smoke.mjs
+        run: |
+          node tests/smoke.mjs
+          node tests/conversation-logic.mjs
   personas:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -24,7 +26,7 @@ jobs:
         run: |
           npm install --no-save playwright
           npx playwright install --with-deps chromium
-      - name: Vier KMU Personas und einen Einpersonenbetrieb im Browser testen
+      - name: KMU Situationen und mobile Nutzung im Browser testen
         run: node tests/personas.mjs
       - name: Screenshot-Belege speichern
         if: always()

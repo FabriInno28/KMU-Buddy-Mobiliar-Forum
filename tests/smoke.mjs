@@ -8,6 +8,10 @@ assert.match(html, /<meta name="viewport"/i, 'Mobile Viewport fehlt');
 assert.match(html, /Weniger suchen\.<br><em>Klarer sehen\.<\/em><br><span class="promise-last">Ins Handeln kommen\.<\/span>/, 'Neues Produktversprechen fehlt');
 assert.match(html, /function mediaWhy\(\)/, 'Begründungslogik für Empfehlungen fehlt');
 assert.match(html, /Warum gerade für dich\?/, 'Begründung an der Medienkarte fehlt');
+assert.match(html, /SITUATIONS\.knowledge=/, 'Eigenständiger Wissenstransfer fehlt');
+assert.match(html, /SITUATIONS\.succession=/, 'Eigenständige Unternehmensnachfolge fehlt');
+assert.match(html, /mvp-result-details/, 'Aufklappbare vertiefte Einordnung fehlt');
+assert.match(html, /mvp-highlights/, 'Kompakte Ergebnis Highlights fehlen');
 assert.ok(!html.includes('"demand":["bake"]'), 'Unpassender Bäckerei Beitrag für Nachfragerückgang darf nicht persönlich empfohlen werden');
 assert.match(html, /prefers-reduced-motion:reduce/, 'Bewegungsreduktion fehlt');
 for (const marker of [

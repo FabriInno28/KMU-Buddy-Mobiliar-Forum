@@ -9,7 +9,8 @@ const examples=[
  {id:'baeckerei',label:'Bäckerei, 4 Personen, Inhaberin als Engpass',story:'Ich führe eine Bäckerei mit vier Leuten. Alles läuft über meinen Tisch und ich komme zu nichts mehr.',question:'Wenn du zwei Tage weg wärst',title:'Eine Entscheidung weniger auf deinem Tisch.',action:'Gib eine kleine, wiederkehrende Entscheidung frei.',choice:'1',method:'Ideenskizze',size:'2'},
  {id:'metallbau',label:'Metallbau, 12 Personen, Übergaben',story:'Wir sind 12 Personen im Metallbau. Bei Übergaben zwischen Büro und Werkstatt geht oft etwas verloren.',question:'Wo geht die Information',title:'Damit die Montage ohne Rückruf starten kann.',action:'Macht drei Fragen vor der nächsten Montage.',choice:'1',method:'Aktionspunkte',size:'10'},
  {id:'coiffeur',label:'Coiffeursalon, 6 Personen, Fachkräfte',story:'Wir sind ein Coiffeursalon mit sechs Leuten. Wir haben Mühe, gute Mitarbeitende zu halten und neue Fachkräfte zu finden.',question:'Was beschäftigt dich beim Thema Mitarbeitende',title:'Warum gute Leute bleiben, ist eine gute Frage.',action:'Frag eine Person, was ihren Alltag bei euch besser macht.',choice:'1',method:'Empathie-Gespräch',size:'5'},
- {id:'schreinerei',label:'Schreinerei, 8 Personen, Nachfolge und Wissen',story:'Unsere Schreinerei hat acht Leute. Unser langjähriger Schreiner geht bald in Pension. Sein Wissen ist nirgends festgehalten.',question:'Welches Wissen wäre morgen',title:'Lasst den wichtigsten Kniff einmal vorzeigen.',action:'Sichert diese Woche einen einzigen Arbeitskniff.',choice:'1',method:'Beobachten',size:'5'},
+ {id:'schreinerei',label:'Schreinerei, 8 Personen, Wissenstransfer',story:'Unsere Schreinerei hat acht Leute. Unser langjähriger Schreiner geht bald in Pension. Sein Wissen ist nirgends festgehalten.',question:'Welches Wissen wäre morgen',title:'Lasst den wichtigsten Kniff einmal vorzeigen.',action:'Sichert diese Woche einen einzigen Arbeitskniff.',choice:'1',method:'Beobachten',size:'5'},
+ {id:'nachfolge',label:'Familienbetrieb, 14 Personen, Unternehmensnachfolge',story:'Ich möchte unseren Familienbetrieb in drei bis fünf Jahren übergeben. Meine Rolle danach und die Verantwortung der nächsten Generation sind noch unklar.',question:'Was ist bei eurer Nachfolge',title:'Auch die Rolle danach gehört zur Nachfolge.',action:'Sprecht 30 Minuten über eure Rollen nach der Übergabe.',choice:'2',method:'Fragen-Landkarte',size:'10'},
 ];
 const browser=await chromium.launch({headless:true});
 const findings=[];
@@ -30,6 +31,16 @@ try{
   const hero=page.locator('.dash-hero h1');
   try{await hero.waitFor({timeout:6000});}catch(e){console.error('DASHBOARD DEBUG',JSON.stringify({persona:p.id,errors,url:page.url(),body:(await page.locator('body').innerText()).slice(0,1800)}));throw e;}
   assert.equal((await hero.innerText()).trim(),p.title,p.id+': falsche persönliche Einordnung');
+  const highlights=page.locator('.mvp-result-card .mvp-highlights li');
+  const highlightCount=await highlights.count();
+  assert.ok(highlightCount>=3&&highlightCount<=5,p.id+': Ergebnis braucht 3–5 Highlights');
+  const resultDetails=page.locator('.mvp-result-details');
+  assert.equal(await resultDetails.evaluate(el=>el.open),false,p.id+': lange Einordnung muss zunächst geschlossen sein');
+  await page.screenshot({path:'test-artifacts/'+p.id+'-dashboard-compact.png',fullPage:true});
+  await resultDetails.locator('summary').click();
+  const heardHeading=resultDetails.getByRole('heading',{name:'Was ich bei euch höre'});
+  await heardHeading.waitFor();
+  assert.ok(await heardHeading.isVisible(),p.id+': vertiefte Einordnung fehlt');
   assert.ok((await page.locator('.feature.action').innerText()).includes(p.action),p.id+': Impuls nicht passend');
   assert.ok((await page.locator('.method-strip').innerText()).includes(p.method),p.id+': Methodenkarte nicht passend');
   const directLinks=page.locator('.dashboard-media-shelf a[href^="https://"]');
@@ -120,7 +131,8 @@ try{
   {id:'landing_baeckerei',story:'Wir sind eine Bäckerei mit vier Leuten. Alles läuft über meinen Tisch.',question:'Wenn du zwei Tage weg wärst'},
   {id:'landing_laden',story:'Wir sind ein Quartierladen mit drei Leuten und haben weniger neue Kundenanfragen.',question:'Wo merkst du die schwächere Nachfrage'},
   {id:'landing_coiffeur',story:'Im Coiffeursalon gehen gute Mitarbeitende wieder.',question:'Was beschäftigt dich beim Thema Mitarbeitende'},
-  {id:'landing_schreinerei',story:'Unser Schreiner geht bald in Pension und sein Wissen ist kaum festgehalten.',question:'Welches Wissen wäre morgen'}
+  {id:'landing_schreinerei',story:'Unser Schreiner geht bald in Pension und sein Wissen ist kaum festgehalten.',question:'Welches Wissen wäre morgen'},
+  {id:'landing_nachfolge',story:'Ich möchte unseren Familienbetrieb in drei Jahren an die nächste Generation übergeben.',question:'Was ist bei eurer Nachfolge'}
  ];
  for(const ex of entryCases){
   const page=await browser.newPage({viewport:{width:390,height:844}});
@@ -268,7 +280,7 @@ try{
  await multi.locator('[data-action="next"]').click();
  await multi.locator('[data-size="2"]').click();
  await multi.locator('[data-action="next"]').click();
- const multiPanel=await multi.locator('.mvp-perspective').innerText();
+ const multiPanel=await multi.locator('.mvp-result-card').innerText();
  assert.ok(multiPanel.includes('Kundschaft & neue Chancen')&&multiPanel.includes('Zusammenarbeit & Verantwortung'),'Secondary topic missing from result');
  await multi.screenshot({path:'test-artifacts/multi-themen-ergebnis.png',fullPage:true});
  findings.push({persona:'Mehrere Themen + bewusst gewählter Fokus',result:'OK'});
@@ -294,7 +306,8 @@ try{
  await ebike.locator('[data-action="next"]').click();
 
  assert.ok((await ebike.locator('.feature.action').innerText()).includes('E-Bike-Anfragen'),'E-Bike-specific action missing');
- const bikePerspective=await ebike.locator('.mvp-perspective').innerText();
+ const bikeResult=ebike.locator('.mvp-result-card');
+ const bikePerspective=await bikeResult.innerText();
  for(const aspect of ['Ob unsere Kundschaft danach fragt','Ob E-Bikes zu unserer Rennvelo-Spezialisierung passen','Was wir dafür können und aufbauen müssten']){
   assert.ok(bikePerspective.includes(aspect),'Selected aspect dropped from personal perspective: '+aspect);
  }
@@ -304,10 +317,12 @@ try{
  await ebike.locator('[data-choice="0"]').click();
  assert.equal(await ebike.locator('.answer.selected').count(),2,'Tapping an answer again must deselect just that answer');
  await ebike.locator('[data-action="next"]').click();
- assert.ok(!(await ebike.locator('.mvp-perspective').innerText()).includes('Ob unsere Kundschaft danach fragt ·'),'Deselected aspect should disappear from result');
+ assert.ok(!(await ebike.locator('.mvp-result-card').innerText()).includes('Ob unsere Kundschaft danach fragt ·'),'Deselected aspect should disappear from result');
 
- for(const expected of ['Was ich bei euch höre','Was zusätzlich hineinspielt','Worin die Spannung','Eine mögliche Richtung','Was ihr dabei herausfinden könnt','Rennvelos','E-Bikes','Zeit & Entscheidungen']) assert.ok(bikePerspective.toLowerCase().includes(expected.toLowerCase()),'Missing meaningful bike perspective: '+expected+'; found='+bikePerspective.slice(0,600));
- assert.ok(!bikePerspective.includes('Wähle einen konkreten Moment aus deinem Alltag.'),'Wrong generic exercise');
+ await ebike.locator('.mvp-result-details summary').click();
+ const bikeDepth=await ebike.locator('.mvp-result-card').innerText();
+ for(const expected of ['Was ich bei euch höre','Was zusätzlich hineinspielt','Worin die Spannung','Eine mögliche Richtung','Was ihr dabei herausfinden könnt','Rennvelos','E-Bikes','Zeit & Entscheidungen']) assert.ok(bikeDepth.toLowerCase().includes(expected.toLowerCase()),'Missing meaningful bike perspective: '+expected+'; found='+bikeDepth.slice(0,600));
+ assert.ok(!bikeDepth.includes('Wähle einen konkreten Moment aus deinem Alltag.'),'Wrong generic exercise');
  await ebike.screenshot({path:'test-artifacts/ebike-perspektive-mobile.png',fullPage:true});
  assert.equal(bikeErrors.length,0,'E-bike journey client errors '+bikeErrors.join(' / '));
  findings.push({persona:'Rennvelo + E-Bikes mit zusätzlichem Thema',result:'OK'});

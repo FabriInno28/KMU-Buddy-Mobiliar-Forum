@@ -13,9 +13,9 @@ Ein eigenständiges, responsives Konzept für die Skalierungsinitiative des Mobi
 3. Im Dashboard den Impuls ausprobieren und weitere passende Möglichkeiten entdecken.
 4. «Neues Gespräch» erlaubt einen Vergleich der verschiedenen Themenpfade.
 
-## MVP 1: Vertiefte Methoden und präzise Medien (September 2026)
+## MVP 1.1: Kompakte Ergebnisse und klar getrennte Zukunftsfragen (September 2026)
 
-Der kostenlose Prototyp zeigt die eigenen Themen im Dashboard, führt mit einer situationsabhängigen Rückfrage zu einem kleinen Versuch und bietet in sieben ausgewählten Methoden eigenständig verfasste Arbeitsblätter. Die Empathie-Gespräch-Karte enthält auch eine konkrete Kontaktanfrage, sechs zum Anlass passende offene Fragen und eine einfache Auswertung. Die Notizen bleiben bis zum Neuladen im Browser; bitte keine echten Personendaten oder vertraulichen Angaben eingeben.
+Der kostenlose Prototyp zeigt nach einer situationsabhängigen Rückfrage zuerst eine persönliche Headline, drei bis fünf zentrale Erkenntnisse und einen kleinen Versuch. Die ausführliche Herleitung bleibt freiwillig aufklappbar. Wissenstransfer, Unternehmensnachfolge und die Inhaberin oder der Inhaber als Engpass führen bewusst zu unterschiedlichen Fragen und nächsten Schritten. Sieben ausgewählte Methoden enthalten eigenständig verfasste Arbeitsblätter. Die Notizen bleiben bis zum Neuladen im Browser; bitte keine echten Personendaten oder vertraulichen Angaben eingeben.
 
 [Medienkuration mit direkten Beitragslinks und begründeter Auswahl](MEDIEN-KURATIERUNG.md). Externe Inhalte anderer Finanzdienstleister werden im öffentlichen Empfehlungsbereich nicht verlinkt; öffentliche Studien für die Forschung sind eine getrennte Frage.
 
@@ -23,7 +23,7 @@ Der kostenlose Prototyp zeigt die eigenen Themen im Dashboard, führt mit einer 
 
 Diese GitHub-Pages-Version benötigt **keinen API-Schlüssel, kein ChatGPT-Abo und kein kostenpflichtiges Hosting**. Die Anwendung läuft vollständig im Browser. Sie führt mit einfachen, offengelegten Regeln durch typische Situationen kleiner Schweizer Unternehmen; **sie ist kein echtes KI-Modell und kann freie Texte nicht zuverlässig semantisch verstehen**.
 
-Neu: Die freie Alltagsschilderung steht im Vordergrund, zusätzlich können vier rein fiktive kleine KMU als Beispiele geöffnet werden. Weitere Szenarien behandeln schwächere Nachfrage, Kostendruck, unklare Anforderungen und den Einpersonenbetrieb. Die Antwort auf die Rückfrage beeinflusst den konkreten Impuls; die Person kann eine unpassende Einordnung korrigieren oder freiwillig in der Browseransicht Feedback geben. Kein Gespräch und kein Feedback werden an einen Server gesendet.
+Neu: Die freie Alltagsschilderung steht im Vordergrund. Drei direkt vergleichbare fiktive Fälle zeigen Inhaberengpass, Wissenstransfer und Unternehmensnachfolge. Weitere Szenarien behandeln schwächere Nachfrage, Kostendruck, unklare Anforderungen und den Einpersonenbetrieb. Die Antwort auf die Rückfrage beeinflusst Headline, Highlights und konkreten Impuls; die Person kann eine unpassende Einordnung korrigieren oder freiwillig in der Browseransicht Feedback geben. Kein Gespräch und kein Feedback werden an einen Server gesendet.
 
 Die öffentlichen Schweizer Studien mit Population, Zeitpunkt und Geltungsgrenzen sowie die fiktiven Testfälle stehen in [RESEARCH-CH.md](RESEARCH-CH.md). Interne Sotomo-Präsentationen, Original-Materialkarten und reale KMU-Daten bleiben ausserhalb dieses öffentlichen Repositories.
 
