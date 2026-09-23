@@ -279,7 +279,7 @@ try{
  await ebike.goto(appUrl);
  await ebike.locator('#hero-story').fill('Wir sind ein Team von fünf Fahrradmechaniker:innen und auf Rennvelos spezialisiert. Sollen wir auch auf den E-Bike-Zug aufspringen?');
  await ebike.locator('#hero-form button[type="submit"]').click();
- assert.ok(await ebike.getByRole('heading',{name:/E-Bike-Frage/}).isVisible(),'E-Bike case not recognized');
+ assert.ok(await ebike.getByRole('heading',{name:/Welche Fragen rund um E-Bikes/}).isVisible(),'E-Bike case not recognized');
  await ebike.locator('.theme-adjust summary').click();
  await ebike.locator('[data-secondary="pressure"]').click();
  assert.equal(await ebike.locator('[data-secondary="pressure"]').getAttribute('aria-pressed'),'true','Additional concern not retained');
