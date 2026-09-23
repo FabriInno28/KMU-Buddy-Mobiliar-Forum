@@ -29,6 +29,8 @@ Der Buddy soll zum eigenen Erzählen einladen und Lust auf Zukunft machen. Die e
 - Ein KMU darf **mehrere Themen gleichzeitig** wählen; die Person bestimmt selbst, womit sie **zuerst** anfangen möchte. Zusätzliche Anliegen bleiben in der Ergebnisansicht sichtbar und können nachträglich ergänzt werden.
 - Der Buddy bietet bei einer freien Schilderung eine **vorsichtige, regelbasierte** Einordnung. Das ist keine semantische KI-Analyse; bei unklaren Eingaben und reiner Themenauswahl benennt er explizit, was er nicht weiss.
 - Die Perspektive im Ergebnis unterscheidet: **Was wir hören; was zusätzlich hineinspielt; mögliche Spannung; mögliche Richtung; weshalb genau dieser Versuch; was sich dadurch herausfinden lässt.** Das sind angebotene Lesarten, keine Diagnosen.
+- Die Ergebnisansicht zeigt zuerst eine klare Headline und **drei bis fünf zentrale Erkenntnisse**. Die ausführliche Herleitung bleibt freiwillig aufklappbar.
+- **Unternehmensnachfolge, Wissenstransfer und die Inhaberin oder der Inhaber als Engpass** sind eigenständige Gesprächspfade. Sie dürfen nicht durch dieselbe Kurzempfehlung beantwortet werden.
 - Ein ausführlicher Beispielpfad für eine Rennvelo-Werkstatt mit E-Bike-Frage zeigt, wie aus einem grossen Strategieentscheid zunächst ein passender kleiner **Nachfrage-Test** wird, ohne die Investitions- oder Sicherheitsfrage vorwegzunehmen.
 - Medien bleiben **nur bei konkreter Passung** empfohlen. Ein zusätzlich markiertes Thema allein darf noch keinen beliebigen Podcast auslösen. Eigene Auswahl und Korrekturen gehen vor automatischer Verschlagwortung.
 
@@ -36,6 +38,7 @@ Der Buddy soll zum eigenen Erzählen einladen und Lust auf Zukunft machen. Die e
 
 - Freier Text steuert das weitere Gespräch nachweislich sinnvoll; bis dahin klar als regelbasierte Demo kennzeichnen.
 - Erster brauchbarer Impuls entsteht vor einer langen Abfolge von Fragen.
+- Headline und drei bis fünf Highlights geben auf den ersten Blick Orientierung; Details sind zugänglich, aber nicht aufgezwungen.
 - Startseite und Dashboard auf einem 390 px Smartphone ohne leere Flächen, abgehackte Karten oder horizontales Scrollen.
 - Empfehlungen beschreiben das Warum und unterscheiden reale Angebote von redaktionellen Produktionsideen.
 - Eigene Angebote, externe Möglichkeiten und Peer Gruppen werden nach Relevanz gemischt, nicht nach Verkaufsinteresse.

@@ -34,6 +34,7 @@ Zusätzlich flossen bereits diskutierte, allgemein formulierte KMU-Themen in die
 - Quartierladen, 3 Personen: Schwächere Kundennachfrage; andere Empfehlung als bei einer vollen Auftragslage mit knapper Marge.
 - Coiffeursalon, 6 Personen: Mitarbeitende gewinnen, halten oder entlasten sind drei verschiedene Fragen.
 - Schreinerei, 8 Personen: Erfahrung geht mit einer Pensionierung verloren; Methodenkarte unterstützt einen ersten Wissenstransfer.
+- Familienbetrieb, 14 Personen: Inhaberschaft plant die Übergabe in drei bis fünf Jahren; der Buddy trennt Zukunftsbild, Rollen und Zeithorizont von späterer Rechts-, Steuer- und Finanzberatung.
 - Café, 3 Personen: Material- und Einkaufskosten – zunächst einen konkreten Fall vergleichen.
 - Velowerkstatt, 2 Personen: Auflage unklar – Frage und Frist erfassen, dann offizielle Stelle/Fachperson kontaktieren.
 - Einpersonenbetrieb: Keine Teamübung, keine Delegation an erfundene Mitarbeitende.
