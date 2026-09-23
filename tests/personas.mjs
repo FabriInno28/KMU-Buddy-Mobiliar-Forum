@@ -251,6 +251,48 @@ try{
  await workshop.screenshot({path:'test-artifacts/methods-overview.png',fullPage:true});
  findings.push({persona:'MVP1 · 7 Praxisguides mit themenbezogenem Interview',result:'OK',questionCount:6,notes:'local'});
  await workshop.close();
+
+ // Neuer Gesprächspfad: mehrere gleichzeitige Themen explizit markieren, Fokus wählen.
+ const multi=await browser.newPage({viewport:{width:390,height:844}});
+ await multi.goto(appUrl);
+ await multi.locator('[data-action="begin"]').click();
+ await multi.locator('[data-choice="team"]').click();
+ await multi.locator('[data-choice="customers"]').click();
+ assert.equal(await multi.locator('[data-choice="team"]').getAttribute('aria-pressed'),'true','first topic lost');
+ assert.equal(await multi.locator('[data-choice="customers"]').getAttribute('aria-pressed'),'true','second topic not selected');
+ await multi.locator('[data-focus="customers"]').click();
+ await multi.locator('[data-action="next"]').click();
+ assert.ok(await multi.getByRole('heading',{name:/Wo wünscht ihr euch gerade/}).isVisible(),'User-selected primary topic not respected');
+ await multi.locator('[data-choice="0"]').click();
+ await multi.locator('[data-action="next"]').click();
+ await multi.locator('[data-size="2"]').click();
+ await multi.locator('[data-action="next"]').click();
+ const multiPanel=await multi.locator('.mvp-perspective').innerText();
+ assert.ok(multiPanel.includes('Kundschaft & neue Chancen')&&multiPanel.includes('Zusammenarbeit & Verantwortung'),'Secondary topic missing from result');
+ await multi.screenshot({path:'test-artifacts/multi-themen-ergebnis.png',fullPage:true});
+ findings.push({persona:'Mehrere Themen + bewusst gewählter Fokus',result:'OK'});
+ await multi.close();
+ // Rennvelo / E-Bike: keine generische Alltagsübung statt eines konkreten Strategie-Versuchs.
+ const ebike=await browser.newPage({viewport:{width:390,height:844}});
+ const bikeErrors=[];ebike.on('pageerror',e=>bikeErrors.push(e.message));
+ await ebike.goto(appUrl);
+ await ebike.locator('#hero-story').fill('Wir sind ein Team von fünf Fahrradmechaniker:innen und auf Rennvelos spezialisiert. Sollen wir auch auf den E-Bike-Zug aufspringen?');
+ await ebike.locator('#hero-form button[type="submit"]').click();
+ assert.ok(await ebike.getByRole('heading',{name:/E-Bike-Frage/}).isVisible(),'E-Bike case not recognized');
+ await ebike.locator('.theme-adjust summary').click();
+ await ebike.locator('[data-secondary="pressure"]').click();
+ assert.equal(await ebike.locator('[data-secondary="pressure"]').getAttribute('aria-pressed'),'true','Additional concern not retained');
+ await ebike.locator('[data-choice="1"]').click();
+ await ebike.locator('[data-action="next"]').click();
+ assert.ok((await ebike.locator('.feature.action').innerText()).includes('E-Bike-Anfragen'),'E-Bike-specific action missing');
+ const bikePerspective=await ebike.locator('.mvp-perspective').innerText();
+ for(const expected of ['Was ich bei euch höre','Was zusätzlich hineinspielt','Worin die Spannung','Eine mögliche Richtung','Was ihr dabei herausfinden könnt','Rennvelos','E-Bikes','Zeit & Entscheidungen']) assert.ok(bikePerspective.includes(expected),'Missing meaningful bike perspective: '+expected);
+ assert.ok(!bikePerspective.includes('Wähle einen konkreten Moment aus deinem Alltag.'),'Wrong generic exercise');
+ await ebike.screenshot({path:'test-artifacts/ebike-perspektive-mobile.png',fullPage:true});
+ assert.equal(bikeErrors.length,0,'E-bike journey client errors '+bikeErrors.join(' / '));
+ findings.push({persona:'Rennvelo + E-Bikes mit zusätzlichem Thema',result:'OK'});
+ await ebike.close();
+
  console.log(JSON.stringify({result:'PASS',tested:findings.length,findings},null,2));
 }finally{await browser.close();}
 
