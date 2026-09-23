@@ -10,7 +10,7 @@ const examples=[
  {id:'metallbau',label:'Metallbau, 12 Personen, Übergaben',story:'Wir sind 12 Personen im Metallbau. Bei Übergaben zwischen Büro und Werkstatt geht oft etwas verloren.',question:'Wo geht die Information',title:'Damit die Montage ohne Rückruf starten kann.',action:'Macht drei Fragen vor der nächsten Montage.',choice:'1',method:'Aktionspunkte',size:'10'},
  {id:'coiffeur',label:'Coiffeursalon, 6 Personen, Fachkräfte',story:'Wir sind ein Coiffeursalon mit sechs Leuten. Wir haben Mühe, gute Mitarbeitende zu halten und neue Fachkräfte zu finden.',question:'Was beschäftigt dich beim Thema Mitarbeitende',title:'Warum gute Leute bleiben, ist eine gute Frage.',action:'Frag eine Person, was ihren Alltag bei euch besser macht.',choice:'1',method:'Empathie-Gespräch',size:'5'},
  {id:'schreinerei',label:'Schreinerei, 8 Personen, Wissenstransfer',story:'Unsere Schreinerei hat acht Leute. Unser langjähriger Schreiner geht bald in Pension. Sein Wissen ist nirgends festgehalten.',question:'Welches Wissen wäre morgen',title:'Lasst den wichtigsten Kniff einmal vorzeigen.',action:'Sichert diese Woche einen einzigen Arbeitskniff.',choice:'1',method:'Beobachten',size:'5'},
- {id:'nachfolge',label:'Familienbetrieb, 14 Personen, Unternehmensnachfolge',story:'Ich möchte unseren Familienbetrieb in drei bis fünf Jahren übergeben. Meine Rolle danach und die Verantwortung der nächsten Generation sind noch unklar.',question:'Was ist bei eurer Nachfolge',title:'Auch die Rolle danach gehört zur Nachfolge.',action:'Nehmt euch 30 Minuten für die Zeit nach der Übergabe.',choice:'2',method:'Fragen-Landkarte',size:'10'},
+ {id:'nachfolge',label:'Familienbetrieb, 14 Personen, Unternehmensnachfolge',story:'Ich möchte unseren Familienbetrieb in drei bis fünf Jahren übergeben. Meine Rolle danach und die Verantwortung der nächsten Generation sind noch unklar.',question:'Was ist bei eurer Nachfolge',title:'Auch die Rolle danach gehört zur Nachfolge.',action:'Sprecht 30 Minuten über eure Rollen nach der Übergabe.',choice:'2',method:'Fragen-Landkarte',size:'10'},
 ];
 const browser=await chromium.launch({headless:true});
 const findings=[];
@@ -36,6 +36,7 @@ try{
   assert.ok(highlightCount>=3&&highlightCount<=5,p.id+': Ergebnis braucht 3–5 Highlights');
   const resultDetails=page.locator('.mvp-result-details');
   assert.equal(await resultDetails.evaluate(el=>el.open),false,p.id+': lange Einordnung muss zunächst geschlossen sein');
+  await page.screenshot({path:'test-artifacts/'+p.id+'-dashboard-compact.png',fullPage:true});
   await resultDetails.locator('summary').click();
   const heardHeading=resultDetails.getByRole('heading',{name:'Was ich bei euch höre'});
   await heardHeading.waitFor();

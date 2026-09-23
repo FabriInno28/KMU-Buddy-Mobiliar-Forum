@@ -34,7 +34,7 @@ assert.ok(api.resultHighlights().some(text=>text.includes('Wissenstransfer')),'W
 
 Object.assign(api.state,{persona:'succession',topic:'pressure',detail:'2',details:['2'],answerText:'Welche Rolle die heutige Inhaberin oder der heutige Inhaber danach hat',size:'10',secondaryTopics:[],story:'Ich möchte unseren Familienbetrieb in drei bis fünf Jahren übergeben.'});
 assert.equal(api.model().title,'Auch die Rolle danach gehört zur Nachfolge.');
-assert.equal(api.model().start,'Nehmt euch 30 Minuten für die Zeit nach der Übergabe.');
+assert.equal(api.model().start,'Sprecht 30 Minuten über eure Rollen nach der Übergabe.');
 assert.ok(api.resultHighlights().some(text=>text.includes('Führung, Verantwortung und Eigentum')),'Unternehmensnachfolge bleibt zu eng');
 assert.ok(!api.resultHighlights().some(text=>text.startsWith('Heute im Fokus')),'Ein Einzelfall erhält einen generischen Themenfüller');
 
