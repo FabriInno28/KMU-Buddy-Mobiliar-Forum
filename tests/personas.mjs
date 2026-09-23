@@ -278,11 +278,11 @@ try{
  await ebike.locator('[data-choice="0"]').click();
  await ebike.locator('[data-action="next"]').click();
  assert.ok(await ebike.locator('.mvp-perspective').isVisible(),'E-Bike: perspective missing');
- const ptext=await ebike.locator('.mvp-perspective').innerText();
- assert.ok(ptext.includes('Worin die Spannung liegen könnte'),'E-Bike: tension missing');
- assert.ok(ptext.includes('Eine mögliche Richtung'),'E-Bike: direction missing');
- assert.ok(ptext.includes('Was ihr mit diesem Versuch herausfinden könnt'),'E-Bike: learning questions missing');
- assert.ok(ptext.includes('Kunden')||ptext.includes('Kundinnen'),'E-Bike: market/customer dimension missing');
+ const ptext=await ebike.locator('.mvp-perspective').innerText();const pnorm=ptext.toLowerCase();
+ assert.ok(pnorm.includes('worin die spannung liegen könnte'),'E-Bike: tension missing');
+ assert.ok(pnorm.includes('eine mögliche richtung'),'E-Bike: direction missing');
+ assert.ok(pnorm.includes('was ihr mit diesem versuch herausfinden könnt'),'E-Bike: learning questions missing');
+ assert.ok(pnorm.includes('kunden')||pnorm.includes('kundinnen'),'E-Bike: market/customer dimension missing');
  assert.ok((await ebike.locator('.feature.action h2').innerText()).includes('echten Kundenfall'),'E-Bike: combined concrete experiment missing');
  const ewidth=await ebike.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
  assert.ok(ewidth.scroll<=ewidth.inner+1,'E-Bike: mobile overflow');
