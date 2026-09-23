@@ -268,6 +268,7 @@ try{
  await multi.locator('[data-action="next"]').click();
  await multi.locator('[data-size="2"]').click();
  await multi.locator('[data-action="next"]').click();
+ await multi.locator('.perspective-more summary').click();
  const multiPanel=await multi.locator('.mvp-perspective').innerText();
  assert.ok(multiPanel.includes('Kundschaft & neue Chancen')&&multiPanel.includes('Zusammenarbeit & Verantwortung'),'Secondary topic missing from result');
  await multi.screenshot({path:'test-artifacts/multi-themen-ergebnis.png',fullPage:true});
@@ -293,7 +294,10 @@ try{
  assert.equal(await ebike.locator('.answer.selected').count(),3,'Changing focus must not drop aspects');
  await ebike.locator('[data-action="next"]').click();
 
- assert.ok((await ebike.locator('.feature.action').innerText()).includes('E-Bike-Anfragen'),'E-Bike-specific action missing');
+ assert.ok((await ebike.locator('.feature.action').innerText()).includes('Voraussetzungen für genau eine E-Bike-Leistung'),'E-Bike: chosen Know-how focus should change the suggested action');
+ assert.ok(await ebike.locator('.perspective-highlights').isVisible(),'Short highlights missing');
+ assert.ok(!(await ebike.locator('.perspective-more').evaluate(el=>el.open)),'Details should be collapsed by default');
+ await ebike.locator('.perspective-more summary').click();
  const bikePerspective=await ebike.locator('.mvp-perspective').innerText();
  for(const aspect of ['Ob unsere Kundschaft danach fragt','Ob E-Bikes zu unserer Rennvelo-Spezialisierung passen','Was wir dafür können und aufbauen müssten']){
   assert.ok(bikePerspective.includes(aspect),'Selected aspect dropped from personal perspective: '+aspect);
@@ -304,6 +308,7 @@ try{
  await ebike.locator('[data-choice="0"]').click();
  assert.equal(await ebike.locator('.answer.selected').count(),2,'Tapping an answer again must deselect just that answer');
  await ebike.locator('[data-action="next"]').click();
+ await ebike.locator('.perspective-more summary').click();
  assert.ok(!(await ebike.locator('.mvp-perspective').innerText()).includes('Ob unsere Kundschaft danach fragt ·'),'Deselected aspect should disappear from result');
 
  for(const expected of ['Was ich bei euch höre','Was zusätzlich hineinspielt','Worin die Spannung','Eine mögliche Richtung','Was ihr dabei herausfinden könnt','Rennvelos','E-Bikes','Zeit & Entscheidungen']) assert.ok(bikePerspective.toLowerCase().includes(expected.toLowerCase()),'Missing meaningful bike perspective: '+expected+'; found='+bikePerspective.slice(0,600));
@@ -312,6 +317,49 @@ try{
  assert.equal(bikeErrors.length,0,'E-bike journey client errors '+bikeErrors.join(' / '));
  findings.push({persona:'Rennvelo + E-Bikes mit zusätzlichem Thema',result:'OK'});
  await ebike.close();
+
+
+ // Szenariobasierte Testdaten sind synthetisch, von den Workshop-Fragen inspiriert.
+ // „Nachfolge“ muss ausdrücklich vom Ruhestand einer Fachperson unterschieden werden.
+ const workshopCases=[
+  {id:'inhabernachfolge',story:'Ich führe seit 25 Jahren eine Metallbaufirma mit elf Personen und werde in fünf Jahren aufhören. Meine Tochter ist interessiert, aber wir wissen nicht, wie unsere Nachfolge aussehen soll.',question:/Unternehmensnachfolge gerade offen/,first:0,second:2,title:'Auch deine persönliche Zukunft gehört zur Nachfolge.',action:'Entwirf drei mögliche Rollen für die Zeit danach.',highlight:'Erster Fokus'},
+  {id:'ki_und_team',story:'Wir sind ein kleines Treuhandbüro mit acht Leuten. Wir wollen KI für wiederkehrende Aufgaben einsetzen, aber Mitarbeitende machen sich Sorgen, ob ihre Arbeit ersetzt wird. Datenschutz ist auch noch offen.',question:/beim Einsatz von KI/,first:1,second:2,title:'Sicherheit und Qualität sind kein Detail am Schluss.',action:'Formuliert drei Bedingungen für einen sicheren KI-Test.',highlight:'Die Spannung'},
+  {id:'feuerloeschmodus',story:'Unsere Schreinerei ist voll ausgelastet. Ich bin nur noch am Feuerlöschen, die Kunden rufen ständig an, für unsere Zukunftsfragen bleibt nie Zeit und jede Entscheidung landet bei mir.',question:/Dauerbetrieb/,first:0,second:1,title:'Findet den Engpass, an dem Entscheidungen hängen bleiben.',action:'Notiert morgen drei Rückfragen, die nur bei dir landen.',highlight:'Die Spannung'},
+  {id:'markt_und_kosten',story:'Wir sind ein kleiner Zulieferer mit neun Menschen. Materialkosten sind gestiegen, gleichzeitig erwarten unsere Kunden mehr Service, wollen aber nicht mehr bezahlen. Wir wissen nicht, welches Angebot sich noch lohnt.',question:/Spannung zwischen Kosten und Kundenwünschen/,first:0,second:2,title:'Findet heraus, was Kundinnen und Kunden wirklich schätzen.',action:'Führt ein zehnminütiges Gespräch über einen echten Kaufentscheid.',highlight:'Erster Fokus'}
+ ];
+ for(const p of workshopCases){
+  const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));await page.goto(appUrl);
+  await page.locator('#hero-story').fill(p.story);await page.locator('#hero-form button[type="submit"]').click();
+  assert.ok(await page.getByRole('heading',{name:p.question}).isVisible(),p.id+': scenario or clarifying question wrong');
+  await page.locator('[data-choice="'+p.first+'"]').click();
+  await page.locator('[data-choice="'+p.second+'"]').click();
+  assert.equal(await page.locator('.answer.selected').count(),2,p.id+': second concern lost');
+  await page.locator('[data-detail-focus="'+p.second+'"]').click();
+  await page.locator('[data-action="next"]').click();
+  assert.ok((await page.locator('.feature.action').innerText()).includes(p.action),p.id+': selected focus did not change next step');
+  assert.ok((await page.locator('.dash-hero h1').innerText()).includes(p.title),p.id+': selected focus did not change headline');
+  assert.ok(await page.locator('.perspective-highlights').isVisible(),p.id+': no summary');
+  assert.ok((await page.locator('.perspective-highlights').innerText()).includes(p.highlight),p.id+': highlight absent');
+  const closed=await page.locator('.perspective-more').evaluate(el=>!el.open);
+  assert.ok(closed,p.id+': details should start collapsed');
+  await page.locator('.perspective-more summary').click();
+  assert.ok((await page.locator('.perspective-depth').innerText()).includes('Welche Fragen ihr gleichzeitig habt'),p.id+': context missing');
+  const width=await page.evaluate(()=>({s:document.documentElement.scrollWidth,w:innerWidth}));
+  assert.ok(width.s<=width.w+1,p.id+': phone horizontal overflow '+JSON.stringify(width));
+  assert.equal(errors.length,0,p.id+': runtime errors '+errors.join(' / '));
+  await page.screenshot({path:'test-artifacts/'+p.id+'-konzept.png',fullPage:true});
+  findings.push({persona:'Workshop-Inspiration · '+p.id,result:'OK'});
+  await page.close();
+ }
+ // Derselbe Sachbereich, völlig andere Frage: Ruhestand einer Fachkraft, nicht Betriebsübergabe.
+ const knowledge=await browser.newPage({viewport:{width:390,height:844}});
+ await knowledge.goto(appUrl);
+ await knowledge.locator('#hero-story').fill('Unser langjähriger Schreiner geht bald in Pension. Nur er kennt die komplizierten Holzverbindungen. Wie kann die nächste Generation das Wissen lernen?');
+ await knowledge.locator('#hero-form button[type="submit"]').click();
+ assert.ok(await knowledge.getByRole('heading',{name:/Welches Wissen wäre morgen/}).isVisible(),'Fachkräfte-Wissen fälschlich als Unternehmensnachfolge eingestuft');
+ await knowledge.close();
+ findings.push({persona:'Fachkraft geht in Pension · Wissenstransfer statt Firmenübergabe',result:'OK'});
 
  console.log(JSON.stringify({result:'PASS',tested:findings.length,findings},null,2));
 }finally{await browser.close();}
