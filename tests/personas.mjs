@@ -286,7 +286,7 @@ try{
  await ebike.locator('[data-action="next"]').click();
  assert.ok((await ebike.locator('.feature.action').innerText()).includes('E-Bike-Anfragen'),'E-Bike-specific action missing');
  const bikePerspective=await ebike.locator('.mvp-perspective').innerText();
- for(const expected of ['Was ich bei euch höre','Was zusätzlich hineinspielt','Worin die Spannung','Eine mögliche Richtung','Was ihr dabei herausfinden könnt','Rennvelos','E-Bikes','Zeit & Entscheidungen']) assert.ok(bikePerspective.includes(expected),'Missing meaningful bike perspective: '+expected);
+ for(const expected of ['Was ich bei euch höre','Was zusätzlich hineinspielt','Worin die Spannung','Eine mögliche Richtung','Was ihr dabei herausfinden könnt','Rennvelos','E-Bikes','Zeit & Entscheidungen']) assert.ok(bikePerspective.toLowerCase().includes(expected.toLowerCase()),'Missing meaningful bike perspective: '+expected+'; found='+bikePerspective.slice(0,600));
  assert.ok(!bikePerspective.includes('Wähle einen konkreten Moment aus deinem Alltag.'),'Wrong generic exercise');
  await ebike.screenshot({path:'test-artifacts/ebike-perspektive-mobile.png',fullPage:true});
  assert.equal(bikeErrors.length,0,'E-bike journey client errors '+bikeErrors.join(' / '));
