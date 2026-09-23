@@ -451,6 +451,21 @@ body{background:#F6F3EC}
 .detail-focus.current{background:#31584C;border-color:#31584C;color:#fff}
 .detail-focus:focus-visible,.answer:focus-visible{outline:3px solid #B03A4A;outline-offset:2px}
 @media(max-width:700px){.detail-focus-wrap{padding:13px;margin:12px 0}.detail-focus{width:100%;text-align:left}}
+
+/* Auf dem Smartphone zuerst Orientierung, die vertiefte Begründung freiwillig. */
+.mvp-perspective .feature-title{font-size:clamp(26px,2.7vw,38px);line-height:1.12;margin-bottom:14px}
+.perspective-highlights{display:grid;gap:0}
+.perspective-highlight{border-top:1px solid #D7E0D5;padding:13px 0}
+.perspective-highlight span{display:block;color:#597268;letter-spacing:.09em;font-weight:800;text-transform:uppercase;font-size:10px;margin-bottom:6px}
+.perspective-highlight p{font:500 clamp(16px,1.7vw,19px)/1.35 Georgia,serif;color:#263D33;margin:0;overflow-wrap:anywhere}
+.perspective-highlight:last-child p{font-weight:700;color:#245A45}
+.perspective-context{font-size:12px;color:#4F6D60;margin:8px 0 12px}
+.perspective-more{border-top:1px solid #CDDBCC;margin-top:13px;padding:0}
+.perspective-more>summary{cursor:pointer;min-height:48px;padding:13px 0;line-height:1.4;color:#9C2838;font-size:13px;font-weight:760}
+.perspective-more>summary span{white-space:nowrap}
+.perspective-more[open]>summary{border-bottom:1px solid #D7E0D5}
+.perspective-depth{padding-top:8px}
+@media(max-width:700px){.mvp-perspective .feature-title{font-size:28px}.perspective-highlight{padding:11px 0}.perspective-highlight p{font-size:16px}.perspective-more>summary{font-size:12px}}
 </style>
 </head>
 <body>
@@ -611,7 +626,32 @@ const PERSPECTIVES={
  solo:{heard:"Du arbeitest allein und möchtest Raum schaffen, um deinen Betrieb weiterzuentwickeln. Dafür muss ein nächster Schritt ohne zusätzliches Team funktionieren.",tension:"Deine Kundenarbeit trägt den Betrieb, beansprucht aber die Zeit, die du für neue Möglichkeiten brauchst.",direction:"Reserviere einen kleinen, verbindlichen Termin für eine einzige Idee und entscheide danach, ob du sie weiterverfolgen möchtest.",learn:"Welche Idee lohnt sich für einen ersten kleinen Versuch?"},
 };
 function perspective(){const p=PERSPECTIVES[scenarioKey()];const m=model();const others=state.secondaryTopics.filter(k=>k!==state.topic).map(themeLabel);return {heard:p?.heard||(state.story.trim()?"Wir haben dein Anliegen noch nicht sicher eingeordnet. Deine Schilderung zeigt einen Anlass, den wir zuerst anhand einer konkreten Situation besser verstehen sollten.":"Du hast zunächst Themen ausgewählt. Welche konkrete Situation bei euch dahintersteht, wissen wir noch nicht. Mit einem echten Beispiel kann dieser Impuls genauer werden."),tension:p?.tension||"Welche zwei Anforderungen oder Wünsche ziehen bei euch gerade in unterschiedliche Richtungen? Das lässt sich aus deinen bisherigen Angaben noch nicht zuverlässig ableiten.",direction:p?.direction||"Bleibt zunächst bei einer konkreten Situation und korrigiert die Einordnung, bevor ihr einen grösseren Entscheid trefft.",learn:p?.learn||"Was ist bei diesem einen Beispiel tatsächlich passiert, und was müsstet ihr als Nächstes herausfinden?",why:scenario()?m.why:"Der erste Versuch hilft, eine konkrete Erfahrung zu prüfen – nicht ein unbekanntes Anliegen vorschnell zu diagnostizieren.",others};}
-function perspectivePanel(){const p=perspective();return '<section class="feature personal mvp-perspective" aria-label="Gemeinsam klarer sehen"><span class="section-label"><span class="dot"></span> GEMEINSAM KLARER SEHEN</span><h2 class="feature-title">Was wir bisher erkennen – und was noch offen ist.</h2><div class="depth-block"><h3>Was ich bei euch höre</h3><p>'+ESC(p.heard)+'</p></div><div class="depth-block"><h3>Welche Fragen ihr gleichzeitig habt</h3><p>'+ESC(state.answerText||'Noch offen – welche Fragen spielen hinein?')+'</p>'+(state.details.length>1?'<p><strong>Erster Fokus:</strong> '+ESC((scenario()?.choices||topics[state.topic]?.choices||[])[Number(state.detail)]||'Wählt einen ersten Fokus')+' · Die übrigen Fragen bleiben sichtbar.</p>':'')+'</div><div class="depth-block"><h3>Was zusätzlich hineinspielt</h3><p><strong>Heute im Fokus:</strong> '+ESC(themeLabel(state.topic))+'</p>'+(p.others.length?'<p><strong>Weitere Themen:</strong> '+p.others.map(ESC).join(' · ')+'</p>':'<p>Vielleicht steckt noch mehr dahinter. Du kannst weitere Themen ergänzen, ohne den ersten Fokus zu verlieren.</p>')+'</div><div class="depth-block"><h3>Worin die Spannung liegen könnte</h3><p>'+ESC(p.tension)+'</p></div><div class="depth-block"><h3>Eine mögliche Richtung</h3><p>'+ESC(p.direction)+'</p></div><div class="depth-block"><h3>Warum dieser erste Schritt?</h3><p>'+ESC(p.why)+'</p></div><div class="depth-block learn"><h3>Was ihr dabei herausfinden könnt</h3><p>'+ESC(p.learn)+'</p></div><div class="perspective-controls"><button class="refine-link" type="button" data-action="refine">Trifft es nicht? Rückfrage neu beantworten ↗</button><button class="refine-link" type="button" data-action="themes">Weitere Themen oder Fokus anpassen ↗</button></div><p class="depth-disclaimer">Mögliche Lesarten aus vorbereiteten Gesprächspfaden, keine KI-Diagnose. Du entscheidest, was tatsächlich zu eurem Betrieb passt.</p></section>';}
+function perspectivePanel(){
+ const p=perspective(),m=model(),opts=scenario()?.choices||topics[state.topic]?.choices||[];
+ const chosen=state.detail!==''?opts[Number(state.detail)]:'';
+ const otherCount=Math.max(0,(state.details||[]).length-1)+(state.secondaryTopics||[]).length;
+ const highlights=[
+  ['Eure Frage',scenario()?m.title:'Euer Anliegen ist noch nicht ganz klar. Wir beginnen bei einem echten Beispiel.'],
+  ['Die Spannung',p.tension],
+  ['Erster Fokus',chosen||themeLabel(state.topic)],
+  ['Euer nächster Schritt',m.start]
+ ];
+ return '<section class="feature personal mvp-perspective" aria-label="Gemeinsam klarer sehen">'+
+ '<span class="section-label"><span class="dot"></span> GEMEINSAM KLARER SEHEN</span>'+
+ '<h2 class="feature-title">Das zeichnet sich für euch ab.</h2>'+
+ '<div class="perspective-highlights">'+highlights.map(([k,v])=>'<div class="perspective-highlight"><span>'+ESC(k)+'</span><p>'+ESC(v)+'</p></div>').join('')+'</div>'+
+ (otherCount?'<p class="perspective-context">Und '+otherCount+' weitere '+(otherCount===1?'Aspekt bleibt':'Aspekte bleiben')+' im Blick.</p>':'')+
+ '<details class="perspective-more"><summary>Mehr erfahren: Einordnung, Hintergründe und Prüffragen <span aria-hidden="true">↗</span></summary>'+
+ '<div class="perspective-depth"><div class="depth-block"><h3>Was ich bei euch höre</h3><p>'+ESC(p.heard)+'</p></div>'+
+ '<div class="depth-block"><h3>Welche Fragen ihr gleichzeitig habt</h3><p>'+ESC(state.answerText||'Noch offen – welche Fragen spielen hinein?')+'</p>'+(state.details.length>1?'<p><strong>Erster Fokus:</strong> '+ESC(chosen||'Wählt einen ersten Fokus')+' · Die übrigen Fragen bleiben sichtbar.</p>':'')+'</div>'+
+ '<div class="depth-block"><h3>Was zusätzlich hineinspielt</h3><p><strong>Heute im Fokus:</strong> '+ESC(themeLabel(state.topic))+'</p>'+(p.others.length?'<p><strong>Weitere Themen:</strong> '+p.others.map(ESC).join(' · ')+'</p>':'<p>Vielleicht steckt noch mehr dahinter. Du kannst weitere Themen ergänzen, ohne den ersten Fokus zu verlieren.</p>')+'</div>'+
+ '<div class="depth-block"><h3>Worin die Spannung liegen könnte</h3><p>'+ESC(p.tension)+'</p></div>'+
+ '<div class="depth-block"><h3>Eine mögliche Richtung</h3><p>'+ESC(p.direction)+'</p></div>'+
+ '<div class="depth-block"><h3>Warum dieser erste Schritt?</h3><p>'+ESC(m.why)+'</p></div>'+
+ '<div class="depth-block learn"><h3>Was ihr dabei herausfinden könnt</h3><p>'+ESC(p.learn)+'</p></div>'+
+ '<div class="perspective-controls"><button class="refine-link" type="button" data-action="refine">Trifft es nicht? Rückfrage neu beantworten ↗</button><button class="refine-link" type="button" data-action="themes">Weitere Themen oder Fokus anpassen ↗</button></div>'+
+ '<p class="depth-disclaimer">Mögliche Lesarten aus vorbereiteten Gesprächspfaden, keine KI-Diagnose. Du entscheidest, was tatsächlich zu eurem Betrieb passt.</p></div></details></section>';
+}
 
 const topicOptions=[['team','Bei uns im Team könnte es runder laufen.'],['customers','Wir möchten neue Kunden und Ideen entdecken.'],['digital','Digitales und KI: Da wäre noch einiges möglich.'],['pressure','Wir müssen etwas entscheiden oder verändern.'],['curious','Eigentlich läuft es. Ich bin einfach neugierig.']];
 const starts=[['quick','Ich möchte heute etwas ausprobieren.'],['team','Ich möchte mein Team mitnehmen.'],['explore','Ich möchte erst neue Ideen entdecken.']];
