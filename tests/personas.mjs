@@ -251,6 +251,46 @@ try{
  await workshop.screenshot({path:'test-artifacts/methods-overview.png',fullPage:true});
  findings.push({persona:'MVP1 · 7 Praxisguides mit themenbezogenem Interview',result:'OK',questionCount:6,notes:'local'});
  await workshop.close();
+
+ // Multiple themes must stay visible, with one explicit first focus.
+ const multi=await browser.newPage({viewport:{width:390,height:844}});
+ const multiErrors=[];multi.on('pageerror',e=>multiErrors.push(e.message));
+ await multi.goto(appUrl);
+ await multi.locator('[data-action="begin"]').click();
+ await multi.locator('[data-choice="customers"]').click();
+ await multi.locator('[data-choice="pressure"]').click();
+ assert.equal(await multi.locator('.answer.selected').count(),2,'Mehrfachauswahl: two themes should stay selected');
+ assert.ok(await multi.locator('.theme-focus').isVisible(),'Mehrfachauswahl: primary-focus panel missing');
+ await multi.locator('[data-primary-topic="customers"]').click();
+ await multi.locator('[data-action="next"]').click();
+ await multi.getByRole('heading',{name:/Was wäre für euch im Moment am wichtigsten zu klären/i}).waitFor();
+ assert.equal(multiErrors.length,0,'Mehrfachauswahl: client errors '+multiErrors.join(' | '));
+ findings.push({persona:'Mehrere Themen · Kundenchance + Entscheidung',result:'OK'});
+ await multi.close();
+
+ // A new market opportunity should produce a combined reading, not a generic repetition.
+ const ebike=await browser.newPage({viewport:{width:390,height:844}});
+ const ebikeErrors=[];ebike.on('pageerror',e=>ebikeErrors.push(e.message));
+ await ebike.goto(appUrl);
+ await ebike.locator('#hero-story').fill('Wir sind fünf Fahrradmechaniker und auf Rennvelos spezialisiert. Wir fragen uns, ob wir jetzt auch auf den E-Bike Zug aufspringen sollen.');
+ await ebike.locator('#hero-form button[type="submit"]').click();
+ await ebike.getByRole('heading',{name:/Was wäre für euch im Moment am wichtigsten zu klären/i}).waitFor();
+ await ebike.locator('[data-choice="0"]').click();
+ await ebike.locator('[data-action="next"]').click();
+ assert.ok(await ebike.locator('.mvp-perspective').isVisible(),'E-Bike: perspective missing');
+ const ptext=await ebike.locator('.mvp-perspective').innerText();
+ assert.ok(ptext.includes('Worin die Spannung liegen könnte'),'E-Bike: tension missing');
+ assert.ok(ptext.includes('Eine mögliche Richtung'),'E-Bike: direction missing');
+ assert.ok(ptext.includes('Was ihr mit diesem Versuch herausfinden könnt'),'E-Bike: learning questions missing');
+ assert.ok(ptext.includes('Kunden')||ptext.includes('Kundinnen'),'E-Bike: market/customer dimension missing');
+ assert.ok((await ebike.locator('.feature.action h2').innerText()).includes('echten Kundenfall'),'E-Bike: combined concrete experiment missing');
+ const ewidth=await ebike.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:window.innerWidth}));
+ assert.ok(ewidth.scroll<=ewidth.inner+1,'E-Bike: mobile overflow');
+ assert.equal(ebikeErrors.length,0,'E-Bike: client errors '+ebikeErrors.join(' | '));
+ await ebike.screenshot({path:'test-artifacts/ebike-combined-perspective.png',fullPage:true});
+ findings.push({persona:'Fahrradmechanik · Rennvelo + E-Bike Chance',result:'OK'});
+ await ebike.close();
+
  console.log(JSON.stringify({result:'PASS',tested:findings.length,findings},null,2));
 }finally{await browser.close();}
 
