@@ -12,6 +12,8 @@ jobs:
           node-version: '22'
       - name: HTML und JavaScript prüfen
         run: node tests/smoke.mjs
+      - name: Kostenlosen Cloudflare KI Pilot ohne echte Modellaufrufe prüfen
+        run: node tests/cloudflare-free.mjs
   personas:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -26,6 +28,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Vier KMU Personas und einen Einpersonenbetrieb im Browser testen
         run: node tests/personas.mjs
+      - name: Kostenloses KI Labor im Browser mit fünf KMU Testfällen prüfen
+        run: node tests/cloudflare-ui.mjs
       - name: Screenshot-Belege speichern
         if: always()
         uses: actions/upload-artifact@v4
